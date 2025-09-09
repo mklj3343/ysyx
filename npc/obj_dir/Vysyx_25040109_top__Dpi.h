@@ -20,7 +20,7 @@ extern "C" {
     extern void itrace_print(int pc, int instruction_word, int instr_len_bytes, int p_count_number);
     // DPI import at /home/zxj17/ysyx-workbench/npc/vsrc/ysyx_25040109_top.v:61:34
     extern void printf_finish();
-    // DPI import at /home/zxj17/ysyx-workbench/npc/vsrc/ysyx_25040109_RegisterFile.v:60:34
+    // DPI import at /home/zxj17/ysyx-workbench/npc/vsrc/ysyx_25040109_RegisterFile.v:54:34
     extern void update_cpu_state(unsigned int pc, const svOpenArrayHandle regs);
     // DPI import at /home/zxj17/ysyx-workbench/npc/vsrc/ysyx_25040109_top.v:59:34
     extern void update_decode_state(int pc, int snpc, int dnpc, int inst);

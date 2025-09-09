@@ -1,5 +1,6 @@
 #include <am.h>
 #include <npc.h>
+#include<klib.h>
 
 extern char _heap_start;
 int main(const char *args);
@@ -23,6 +24,42 @@ void halt(int code) {
 }
 
 void _trm_init() {
+
+  /*
+  unsigned int vendor_id;
+  unsigned int arch_id;
+  unsigned int mcycle;
+  unsigned int mcycleh;
+
+  asm volatile("csrr %0, mcycle" : "=r"(mcycle));
+  asm volatile("csrr %0, mcycleh" : "=r"(mcycleh));
+
+  printf("CSR mycle  : %u  , %u\n", mcycle,mcycleh);
+
+  asm volatile("csrr %0, mvendorid" : "=r"(vendor_id));
+  asm volatile("csrr %0, marchid" : "=r"(arch_id));
+
+  asm volatile("csrr %0, mcycle" : "=r"(mcycle));
+  asm volatile("csrr %0, mcycleh" : "=r"(mcycleh));
+
+  printf("CSR mycle  : %u  , %u\n", mcycle, mcycleh);
+
+  printf("CSR mvendorid: 0x%08x -> Vendor: %c%c%c%c\n", vendor_id,
+         (vendor_id >> 24) & 0xff, (vendor_id >> 16) & 0xff,
+         (vendor_id >> 8) & 0xff, (vendor_id >> 0) & 0xff);
+
+  asm volatile("csrr %0, mcycle" : "=r"(mcycle));
+  asm volatile("csrr %0, mcycleh" : "=r"(mcycleh));
+
+  printf("CSR mycle  : %u  , %u\n", mcycle, mcycleh);
+
+  printf("CSR marchid  : %u (0x%x)\n", arch_id, arch_id);
+
+  asm volatile("csrr %0, mcycle" : "=r"(mcycle));
+  asm volatile("csrr %0, mcycleh" : "=r"(mcycleh));
+
+  printf("CSR mycle  : %u  , %u\n", mcycle, mcycleh);
+*/
   int ret = main(mainargs);
   halt(ret);
 }

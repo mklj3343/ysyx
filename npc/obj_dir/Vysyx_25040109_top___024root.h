@@ -19,12 +19,13 @@ class Vysyx_25040109_top___024root final : public VerilatedModule {
     CData/*0:0*/ ysyx_25040109_top__DOT__cpu__DOT__next_state;
     CData/*0:0*/ ysyx_25040109_top__DOT__cpu__DOT__is_load;
     CData/*0:0*/ ysyx_25040109_top__DOT__cpu__DOT__is_store;
-    CData/*0:0*/ ysyx_25040109_top__DOT__cpu__DOT__reg_write_en;
     CData/*0:0*/ ysyx_25040109_top__DOT__cpu__DOT__is_add;
     CData/*0:0*/ ysyx_25040109_top__DOT__cpu__DOT__is_jalr;
+    CData/*0:0*/ ysyx_25040109_top__DOT__cpu__DOT__is_csrrw;
     CData/*4:0*/ ysyx_25040109_top__DOT__cpu__DOT__raddr1;
     CData/*4:0*/ ysyx_25040109_top__DOT__cpu__DOT__raddr2;
     CData/*0:0*/ ysyx_25040109_top__DOT__cpu__DOT____VdfgTmp_hf3066aec__0;
+    CData/*0:0*/ ysyx_25040109_top__DOT__cpu__DOT__idu__DOT____VdfgTmp_h250803ec__0;
     CData/*0:0*/ __Vtrigrprev__TOP__clk;
     CData/*0:0*/ __VactContinue;
     VL_OUT(pc,31,0);
@@ -46,6 +47,7 @@ class Vysyx_25040109_top___024root final : public VerilatedModule {
     IData/*31:0*/ __VstlIterCount;
     IData/*31:0*/ __VicoIterCount;
     IData/*31:0*/ __VactIterCount;
+    QData/*63:0*/ ysyx_25040109_top__DOT__cpu__DOT__mcycle_counter;
     VlUnpacked<IData/*31:0*/, 16> ysyx_25040109_top__DOT__cpu__DOT__regfile__DOT__rf;
     VlUnpacked<CData/*0:0*/, 3> __Vm_traceActivity;
     VlTriggerVec<1> __VstlTriggered;

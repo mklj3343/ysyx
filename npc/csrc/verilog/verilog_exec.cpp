@@ -49,12 +49,12 @@ static void exec_once(){
     top->clk = 1;
     top->eval();
     tfp->dump(sim_time++);
-    top->clk = 0;
+ /*   top->clk = 0;
     top->eval();
     tfp->dump(sim_time++);
     top->clk = 1;
     top->eval();
-    tfp->dump(sim_time++);
+    tfp->dump(sim_time++);*/
 
 }
 

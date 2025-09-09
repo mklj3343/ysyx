@@ -165,6 +165,7 @@ static int cmd_st(char *args)
     return 0;
 }
 
+
 static struct 
 {
     const char *name;

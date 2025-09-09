@@ -18,10 +18,11 @@ module ysyx_25040109_cpu (
     localparam STATE_FETCH_INST = 1'b0;
     localparam STATE_EXECUTE    = 1'b1;
 
+
     reg  current_state;
     wire next_state;
 
-    // CPU 内部信号
+
 `ifdef SYNTHESIS
     wire [31:0] next_pc;
 `endif
@@ -37,7 +38,20 @@ module ysyx_25040109_cpu (
     wire        inst_invalid;
     wire [4:0]  rd_addr;
     wire [2:0]  funct3;
-    wire        is_add, is_lui, is_jalr;
+    wire        is_add, is_lui, is_jalr,is_csrrw;
+
+    wire [11:0] csr_addr;
+    wire [31:0] csr_rdata;
+    reg  [63:0] mcycle_counter;
+
+
+    always @(posedge clk) begin
+        if(rst)begin
+            mcycle_counter <= 64'd0;
+        end else begin
+            mcycle_counter <= mcycle_counter + 1;
+        end
+    end
 
 `ifndef SYNTHESIS
     assign pc_out = pc_current;
@@ -88,8 +102,11 @@ module ysyx_25040109_cpu (
         .inst_invalid(inst_invalid),
         .is_add(is_add),
         .is_lui(is_lui),
-        .is_jalr(is_jalr)
+        .is_jalr(is_jalr),
+        .is_csrrw(is_csrrw),
+        .csr_addr(csr_addr)
     );
+
 
     // EXU 模块
     ysyx_25040109_EXU exu (
@@ -104,6 +121,16 @@ module ysyx_25040109_cpu (
         .is_lui(is_lui),
         .is_jalr(is_jalr)
     );
+        
+    localparam CSR_MCYCLE     = 12'hB00 ;
+    localparam CSR_MCYCLEH    = 12'hB80 ;
+    localparam CSR_MVENDORID  = 12'hF11;
+    localparam CSR_MARCHID    = 12'hF12 ;
+
+    assign csr_rdata =  (csr_addr == CSR_MCYCLE)    ? mcycle_counter[31:0] :
+                        (csr_addr == CSR_MCYCLEH )  ? mcycle_counter[63:32] :
+                        (csr_addr == CSR_MVENDORID) ? 32'h79737978 :
+                        (csr_addr == CSR_MARCHID)   ? 32'h17e14ed :  32'h0;
 
     // 内存接口
     assign mem_addr = (current_state == STATE_FETCH_INST) ? pc_current : alu_result;
@@ -120,13 +147,14 @@ module ysyx_25040109_cpu (
     always @(*) begin
         load_data = 32'b0;
         case (funct3)
-            3'b010: load_data = mem_rdata;              // LW
-            3'b100: load_data = {24'b0, mem_rdata[7:0]}; // LBU
+            3'b010: load_data = mem_rdata;              
+            3'b100: load_data = {24'b0, mem_rdata[7:0]}; 
             default: ;
         endcase
     end
 
-    assign writeback_data = is_load ? load_data : alu_result;
+    assign writeback_data =is_csrrw ? csr_rdata :
+                            is_load ? load_data : alu_result;
 
     // 寄存器堆实例化
     ysyx_25040109_RegisterFile #(.ADDR_WIDTH(5), .DATA_WIDTH(32)) regfile (
