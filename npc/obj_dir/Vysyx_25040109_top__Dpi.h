@@ -24,9 +24,9 @@ extern "C" {
     extern void update_cpu_state(unsigned int pc, const svOpenArrayHandle regs);
     // DPI import at /home/zxj17/ysyx-workbench/npc/vsrc/ysyx_25040109_top.v:59:34
     extern void update_decode_state(int pc, int snpc, int dnpc, int inst);
-    // DPI import at /home/zxj17/ysyx-workbench/npc/vsrc/ysyx_25040109_mem.v:14:34
-    extern void verilog_pmem_read(int addr, int* data);
-    // DPI import at /home/zxj17/ysyx-workbench/npc/vsrc/ysyx_25040109_mem.v:15:34
+    // DPI import at /home/zxj17/ysyx-workbench/npc/vsrc/ysyx_25040109_mem.v:16:33
+    extern int verilog_pmem_read(int addr);
+    // DPI import at /home/zxj17/ysyx-workbench/npc/vsrc/ysyx_25040109_mem.v:17:34
     extern void verilog_pmem_write(int addr, int data, int len);
 
 #ifdef __cplusplus

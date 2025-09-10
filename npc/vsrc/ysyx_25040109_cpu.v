@@ -7,13 +7,16 @@ module ysyx_25040109_cpu (
 `endif
     input clk,
     input rst,
-    output [31:0] mem_addr,  
-    output [31:0] mem_wdata,  
-    output        mem_wen,    
-    output        mem_ren,    
-    output [2:0]  mem_funct3,
-    input  [31:0] mem_rdata    
-);
+    
+    output [31:0] ifu_raddr,
+    input  [31:0] ifu_rdata,
+    output [31:0] lsu_addr,
+    output lsu_wen,
+    output [31:0] lsu_wdata,
+    output [3:0]  lsu_wmask,
+    input [31:0]  lsu_rdata
+    
+    );
 
     localparam STATE_FETCH_INST = 1'b0;
     localparam STATE_EXECUTE    = 1'b1;
@@ -27,7 +30,8 @@ module ysyx_25040109_cpu (
     wire [31:0] next_pc;
 `endif
     wire [31:0] pc_current;
-    reg  [31:0] inst_reg; // 指令寄存器，锁存取回的指令
+    reg  [31:0] inst;
+    wire ifu_valid;
 
     wire [31:0] rs1_data, rs2_data, imm;
     wire [31:0] alu_result;
@@ -44,6 +48,10 @@ module ysyx_25040109_cpu (
     wire [31:0] csr_rdata;
     reg  [63:0] mcycle_counter;
 
+    wire lsu_start = (current_state == STATE_EXECUTE) && (is_load || is_store) && ifu_valid;
+    wire lsu_done;
+
+
 
     always @(posedge clk) begin
         if(rst)begin
@@ -55,20 +63,25 @@ module ysyx_25040109_cpu (
 
 `ifndef SYNTHESIS
     assign pc_out = pc_current;
-    assign inst_out = inst_reg;
+    assign inst_out = inst;
 `endif
 
-    // PC 寄存器
-    wire pc_update_en = (current_state == STATE_EXECUTE);
-    ysyx_25040109_Reg #(.WIDTH(32), .RESET_VAL(32'h80000000)) pc_reg (
+
+    wire pc_update_en = (current_state == STATE_EXECUTE) && lsu_done && ifu_valid; 
+    ysyx_25040109_IFU ifu(
         .clk(clk),
         .rst(rst),
-        .din(next_pc),
-        .dout(pc_current),
-        .wen(pc_update_en)
+        .next_pc(next_pc),
+        .pc_update_en(pc_update_en),
+        .pc_current(pc_current),
+        .inst_out(inst),
+        .ifu_valid(ifu_valid),
+        .ifu_raddr(ifu_raddr),
+        .ifu_rdata(ifu_rdata)
     );
 
-    // 状态机
+
+
     always @(posedge clk) begin
         if (rst) begin
             current_state <= STATE_FETCH_INST;
@@ -79,20 +92,12 @@ module ysyx_25040109_cpu (
 
     assign next_state = (current_state == STATE_FETCH_INST) ? STATE_EXECUTE : STATE_FETCH_INST;
 
-    // 指令锁存
-    always @(posedge clk) begin
-        if (!rst && current_state == STATE_FETCH_INST) begin
-            inst_reg <= mem_rdata;
-        end
-    end
 
-    // 提前选择读地址：在 FETCH 状态使用 mem_rdata 的 rs1/rs2
-    wire [4:0] raddr1 = (current_state == STATE_FETCH_INST) ? mem_rdata[19:15] : inst_reg[19:15];
-    wire [4:0] raddr2 = (current_state == STATE_FETCH_INST) ? mem_rdata[24:20] : inst_reg[24:20];
+
 
     // IDU 模块
     ysyx_25040109_IDU idu (
-        .inst(inst_reg),
+        .inst(inst),
         .rd_addr(rd_addr),
         .imm(imm),
         .is_load(is_load),
@@ -121,6 +126,9 @@ module ysyx_25040109_cpu (
         .is_lui(is_lui),
         .is_jalr(is_jalr)
     );
+
+    
+
         
     localparam CSR_MCYCLE     = 12'hB00 ;
     localparam CSR_MCYCLEH    = 12'hB80 ;
@@ -132,31 +140,37 @@ module ysyx_25040109_cpu (
                         (csr_addr == CSR_MVENDORID) ? 32'h79737978 :
                         (csr_addr == CSR_MARCHID)   ? 32'h17e14ed :  32'h0;
 
+
+                        
+    ysyx_25040109_LSU lsu (
+            .clk(clk),
+            .rst(rst),
+            .is_load(is_load),
+            .is_store(is_store),
+            .alu_result(alu_result),
+            .rs2_data(rs2_data),
+            .funct3(funct3),
+            .lsu_start(lsu_start),
+            .load_data(load_data),
+            .lsu_done(lsu_done),
+            .lsu_addr(lsu_addr),
+            .lsu_wen(lsu_wen),
+            .lsu_wdata(lsu_wdata),
+            .lsu_wmask(lsu_wmask),
+            .lsu_rdata(lsu_rdata)
+        );           
+
     // 内存接口
-    assign mem_addr = (current_state == STATE_FETCH_INST) ? pc_current : alu_result;
-    assign mem_wdata = rs2_data;
 
-    wire read_request = (current_state == STATE_FETCH_INST) ||
-                       ((current_state == STATE_EXECUTE) && is_load && !inst_invalid);
-    wire is_addr_valid = (pc_current != 32'h00000000);
-    assign mem_ren = !rst && read_request && is_addr_valid;
-    assign mem_wen = !rst && (current_state == STATE_EXECUTE) && is_store && !inst_invalid;
-    assign mem_funct3 = funct3;
 
-    // 加载数据处理
-    always @(*) begin
-        load_data = 32'b0;
-        case (funct3)
-            3'b010: load_data = mem_rdata;              
-            3'b100: load_data = {24'b0, mem_rdata[7:0]}; 
-            default: ;
-        endcase
-    end
 
     assign writeback_data =is_csrrw ? csr_rdata :
                             is_load ? load_data : alu_result;
 
-    // 寄存器堆实例化
+
+    wire [4:0] raddr1 = inst[19:15];
+    wire [4:0] raddr2 = inst[24:20];                        
+
     ysyx_25040109_RegisterFile #(.ADDR_WIDTH(5), .DATA_WIDTH(32)) regfile (
         .pc(pc_current),
         .clk(clk),
