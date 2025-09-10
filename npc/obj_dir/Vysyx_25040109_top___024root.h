@@ -25,9 +25,12 @@ class Vysyx_25040109_top___024root final : public VerilatedModule {
     CData/*0:0*/ ysyx_25040109_top__DOT__cpu__DOT__is_jalr;
     CData/*0:0*/ ysyx_25040109_top__DOT__cpu__DOT__is_csrrw;
     CData/*0:0*/ ysyx_25040109_top__DOT__cpu__DOT__lsu_start;
+    CData/*0:0*/ ysyx_25040109_top__DOT__cpu__DOT__lsu_done;
+    CData/*0:0*/ ysyx_25040109_top__DOT__cpu__DOT__is_mem_op;
+    CData/*0:0*/ ysyx_25040109_top__DOT__cpu__DOT__is_load_stall;
     CData/*0:0*/ ysyx_25040109_top__DOT__cpu__DOT__ifu__DOT__current_state;
     CData/*0:0*/ ysyx_25040109_top__DOT__cpu__DOT__idu__DOT____VdfgTmp_h250803ec__0;
-    CData/*0:0*/ ysyx_25040109_top__DOT__cpu__DOT__lsu__DOT__current_state;
+    CData/*1:0*/ ysyx_25040109_top__DOT__cpu__DOT__lsu__DOT__current_state;
     CData/*0:0*/ __VdfgTmp_h9113fbb1__0;
     CData/*0:0*/ __Vtrigrprev__TOP__clk;
     CData/*0:0*/ __VactContinue;

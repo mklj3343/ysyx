@@ -40,18 +40,26 @@ module ysyx_25040109_mem (
                     endcase
                     if (len > 0) begin
     `ifndef SYNTHESIS
-                        verilog_pmem_write(lsu_addr, lsu_wdata, len);
+                     if (lsu_addr >= 32'h80000000) begin
+                    verilog_pmem_write(lsu_addr, lsu_wdata, len);
+                     end
+                        
     `else
                         
     `endif
                     end
                 end else begin
     `ifndef SYNTHESIS
-                    if(ifu_raddr != 32'h0)
+                    if(lsu_addr  >= 32'h80000000 )begin
                     lsu_rdata <= verilog_pmem_read(lsu_addr);
+                    end else begin
+
+                        lsu_rdata <= 32'h0; 
+                    end
     `else
                     lsu_rdata <= 32'h0;
     `endif
+    
                 end
             end
         end

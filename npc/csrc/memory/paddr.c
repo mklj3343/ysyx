@@ -55,8 +55,11 @@ word_t paddr_read(paddr_t addr, int len)
         return ret;
     }
 
-    IFDEF(CONFIG_DEVICE,  ret = mmio_read(addr, len); return ret);
+    printf("addr:0x%08x,pc:0x%08x\n", addr, cpu.pc);
+    printf("111111111\n");
+    IFDEF(CONFIG_DEVICE, ret = mmio_read(addr, len); return ret);
 
+    printf("22222222\n");
     out_of_bound(addr);
     return 0;
 }
@@ -70,7 +73,8 @@ void paddr_write(paddr_t addr, int len, word_t data)
     return;
   }
 
- IFDEF(CONFIG_DEVICE,  mmio_write(addr, len, data); return);
-
- out_of_bound(addr);
+  printf("333333333333\n");
+  IFDEF(CONFIG_DEVICE, mmio_write(addr, len, data); return);
+  printf("44444444\n");
+  out_of_bound(addr);
 }

@@ -23,14 +23,14 @@ module ysyx_25040109_cpu (
 
 
     reg  current_state;
-    wire next_state;
+    reg next_state;
 
 
 `ifdef SYNTHESIS
     wire [31:0] next_pc;
 `endif
     wire [31:0] pc_current;
-    reg  [31:0] inst;
+    wire  [31:0] inst;
     wire ifu_valid;
 
     wire [31:0] rs1_data, rs2_data, imm;
@@ -66,8 +66,11 @@ module ysyx_25040109_cpu (
     assign inst_out = inst;
 `endif
 
+    wire is_mem_op = is_load || is_store;
+    wire execute_done = is_mem_op ? lsu_done : 1'b1;
 
-    wire pc_update_en = (current_state == STATE_EXECUTE) && lsu_done && ifu_valid; 
+    wire pc_update_en = (current_state == STATE_EXECUTE) && execute_done && ifu_valid;
+
     ysyx_25040109_IFU ifu(
         .clk(clk),
         .rst(rst),
@@ -77,10 +80,27 @@ module ysyx_25040109_cpu (
         .inst_out(inst),
         .ifu_valid(ifu_valid),
         .ifu_raddr(ifu_raddr),
-        .ifu_rdata(ifu_rdata)
+        .ifu_rdata(ifu_rdata),
+        .stall(is_load_stall)
     );
 
 
+    wire is_load_stall = (current_state == STATE_EXECUTE) && is_load && !lsu_done;
+    always @(*) begin
+    case (current_state)
+        STATE_FETCH_INST: begin
+            next_state = STATE_EXECUTE;
+        end
+        STATE_EXECUTE: begin
+            if (is_load_stall) begin
+                next_state = STATE_EXECUTE; // ==> 暂停！保持在EXECUTE状态
+            end else begin
+                next_state = STATE_FETCH_INST; // ==> 正常完成，进入下一个FETCH
+            end
+        end
+        default: next_state = STATE_FETCH_INST;
+    endcase
+end
 
     always @(posedge clk) begin
         if (rst) begin
@@ -90,7 +110,7 @@ module ysyx_25040109_cpu (
         end
     end
 
-    assign next_state = (current_state == STATE_FETCH_INST) ? STATE_EXECUTE : STATE_FETCH_INST;
+
 
 
 
@@ -160,8 +180,6 @@ module ysyx_25040109_cpu (
             .lsu_rdata(lsu_rdata)
         );           
 
-    // 内存接口
-
 
 
     assign writeback_data =is_csrrw ? csr_rdata :
@@ -171,13 +189,14 @@ module ysyx_25040109_cpu (
     wire [4:0] raddr1 = inst[19:15];
     wire [4:0] raddr2 = inst[24:20];                        
 
+    wire regfile_wen = (current_state == STATE_EXECUTE) && reg_write_en && !inst_invalid && !is_load_stall;
     ysyx_25040109_RegisterFile #(.ADDR_WIDTH(5), .DATA_WIDTH(32)) regfile (
         .pc(pc_current),
         .clk(clk),
         .rst(rst),
         .wdata(writeback_data),
         .waddr(rd_addr),
-        .wen((current_state == STATE_EXECUTE) && reg_write_en && !inst_invalid),
+        .wen(regfile_wen),
         .raddr1(raddr1),
         .raddr2(raddr2),
         .rdata1(rs1_data),
