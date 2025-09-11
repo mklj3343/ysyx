@@ -22,11 +22,12 @@ module ysyx_25040109_cpu (
     input  [31:0] lsu_rdata
 );
 
-    localparam S_FETCH     = 2'b00;
-    localparam S_WAIT_INST = 2'b01;
-    localparam S_EXEC      = 2'b10;
-    localparam S_WAIT_MEM  = 2'b11;
-    reg [1:0] state;
+    localparam S_FETCH     = 3'b000;
+    localparam S_WAIT_INST = 3'b001;
+    localparam S_DECODE    = 3'b010; // 新增状态
+    localparam S_EXECUTE   = 3'b011; // 替换 S_EXEC
+    localparam S_WAIT_MEM  = 3'b100;
+    reg [2:0] state;
 
     reg [31:0] inst_reg;     // 指令寄存器
     reg [31:0] load_data;    // load数据 (extend后)
@@ -86,10 +87,13 @@ module ysyx_25040109_cpu (
                     fetch_en <= 0;
                     if (fetch_done) begin
                         inst_reg <= ifu_inst;
-                        state <= S_EXEC;
+                        state <= S_DECODE;
                     end
                 end
-                S_EXEC: begin
+                S_DECODE:begin
+                    state<= S_EXECUTE;
+                end
+                S_EXECUTE: begin
                     if (inst_invalid) begin  // 无效指令，直接下一条
                         state <= S_FETCH;
                     end else if (is_load || is_store) begin
@@ -114,6 +118,9 @@ module ysyx_25040109_cpu (
                         state <= S_FETCH;
                     end
                 end
+
+                default:state <= S_FETCH;
+
             endcase
         end
     end
@@ -131,7 +138,7 @@ end
 `endif
 
     // PC 寄存器
-    wire pc_update_en = ((state == S_EXEC) && !(is_load || is_store)) || ((state == S_WAIT_MEM) && lsu_done);
+    wire pc_update_en = ((state == S_EXECUTE) && !(is_load || is_store)) || ((state == S_WAIT_MEM) && lsu_done);
     ysyx_25040109_Reg #(.WIDTH(32), .RESET_VAL(32'h80000000)) pc_reg (
         .clk(clk),
         .rst(rst),
@@ -158,6 +165,7 @@ end
     );
 
     // EXU 模块
+
     ysyx_25040109_EXU exu (
         .pc(pc_current),
         .rs1_data(rs1_data),
@@ -169,6 +177,7 @@ end
         .is_add(is_add),
         .is_lui(is_lui),
         .is_jalr(is_jalr)
+
     );
 
     localparam CSR_MCYCLE  = 12'hB00;
@@ -180,8 +189,7 @@ end
                             is_load ? load_data : alu_result;
 
     // 寄存器堆
-    wire reg_wen = ((state == S_EXEC) && reg_write_en && !inst_invalid && !(is_load || is_store)) ||
-                   ((state == S_WAIT_MEM) && lsu_done && reg_write_en && !inst_invalid);
+    wire reg_wen = ((state == S_EXECUTE) && reg_write_en && !inst_invalid && !(is_load || is_store)) || ((state == S_WAIT_MEM) && lsu_done && reg_write_en && !inst_invalid);
     ysyx_25040109_RegisterFile #(.ADDR_WIDTH(5), .DATA_WIDTH(32)) regfile (
         .pc(pc_current),
         .clk(clk),

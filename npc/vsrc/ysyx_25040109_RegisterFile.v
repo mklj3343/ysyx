@@ -6,9 +6,7 @@ module ysyx_25040109_RegisterFile #(
     output [DATA_WIDTH-1:0] a0_out,
 `endif
     input                   clk,
-    /* verilator lint_off UNUSED */
     input                   rst,
-    /* verilator lint_off UNUSED */
     input  [31:0]           pc,
     input  [DATA_WIDTH-1:0] wdata,
     input  [ADDR_WIDTH-1:0] waddr,
@@ -35,7 +33,7 @@ module ysyx_25040109_RegisterFile #(
     end
 
 
-    /*
+    
     always @(posedge clk) begin
         if (rst) begin
             rdata1_reg <= 32'h0;
@@ -45,9 +43,9 @@ module ysyx_25040109_RegisterFile #(
             rdata2_reg <= (raddr2 == 5'b0) ? 32'b0 : rf[raddr2[3:0]];
         end
     end
-    */
-    assign rdata1 = (raddr1 == 5'b0) ? 32'b0 : rf[raddr1[3:0]];
-    assign rdata2 = (raddr2 == 5'b0) ? 32'b0 : rf[raddr2[3:0]];
+    
+    assign rdata1 = rdata1_reg;
+    assign rdata2 = rdata2_reg;
 
 `ifndef SYNTHESIS
     assign a0_out = rf[10];

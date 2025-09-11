@@ -21,7 +21,7 @@ class Vysyx_25040109_top___024root final : public VerilatedModule {
     CData/*0:0*/ ysyx_25040109_top__DOT__lsu_wen;
     CData/*3:0*/ ysyx_25040109_top__DOT__lsu_wmask;
     CData/*0:0*/ ysyx_25040109_top__DOT__lsu_respValid;
-    CData/*1:0*/ ysyx_25040109_top__DOT__cpu__DOT__state;
+    CData/*2:0*/ ysyx_25040109_top__DOT__cpu__DOT__state;
     CData/*0:0*/ ysyx_25040109_top__DOT__cpu__DOT__fetch_en;
     CData/*0:0*/ ysyx_25040109_top__DOT__cpu__DOT__lsu_en;
     CData/*0:0*/ ysyx_25040109_top__DOT__cpu__DOT__is_load;
@@ -33,7 +33,7 @@ class Vysyx_25040109_top___024root final : public VerilatedModule {
     CData/*0:0*/ ysyx_25040109_top__DOT__cpu__DOT__is_csrrw;
     CData/*0:0*/ ysyx_25040109_top__DOT__cpu__DOT__lsu_done;
     CData/*0:0*/ ysyx_25040109_top__DOT__cpu__DOT____VdfgTmp_hd745c079__0;
-    CData/*0:0*/ ysyx_25040109_top__DOT__cpu__DOT____VdfgTmp_h21df59c1__0;
+    CData/*0:0*/ ysyx_25040109_top__DOT__cpu__DOT____VdfgTmp_h7993bfbd__0;
     CData/*0:0*/ ysyx_25040109_top__DOT__cpu__DOT____VdfgTmp_hf3066aec__0;
     CData/*0:0*/ ysyx_25040109_top__DOT__cpu__DOT__idu__DOT____VdfgTmp_h250803ec__0;
     CData/*0:0*/ ysyx_25040109_top__DOT__cpu__DOT__ifu__DOT__state;
@@ -53,15 +53,12 @@ class Vysyx_25040109_top___024root final : public VerilatedModule {
     IData/*31:0*/ ysyx_25040109_top__DOT__cpu__DOT__inst_reg;
     IData/*31:0*/ ysyx_25040109_top__DOT__cpu__DOT__load_data;
     IData/*31:0*/ ysyx_25040109_top__DOT__cpu__DOT__pc_current;
-    IData/*31:0*/ ysyx_25040109_top__DOT__cpu__DOT__rs1_data;
-    IData/*31:0*/ ysyx_25040109_top__DOT__cpu__DOT__rs2_data;
     IData/*31:0*/ ysyx_25040109_top__DOT__cpu__DOT__imm;
     IData/*31:0*/ ysyx_25040109_top__DOT__cpu__DOT__alu_result;
     IData/*31:0*/ ysyx_25040109_top__DOT__cpu__DOT__regfile__DOT__rdata1_reg;
     IData/*31:0*/ ysyx_25040109_top__DOT__cpu__DOT__regfile__DOT__rdata2_reg;
     IData/*31:0*/ ysyx_25040109_top__DOT__cpu__DOT__ifu__DOT__inst_reg;
     IData/*31:0*/ ysyx_25040109_top__DOT__cpu__DOT__lsu__DOT__rdata_reg;
-    IData/*31:0*/ __VdfgTmp_he3bf7288__0;
     IData/*31:0*/ __VstlIterCount;
     IData/*31:0*/ __VactIterCount;
     QData/*63:0*/ ysyx_25040109_top__DOT__cpu__DOT__mcycle_counter;
