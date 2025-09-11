@@ -73,18 +73,18 @@ VL_INLINE_OPT void Vysyx_25040109_top___024root____Vdpiimwrap_ysyx_25040109_top_
     verilog_pmem_read__Vfuncrtn = verilog_pmem_read__Vfuncrtn__Vcvt;
 }
 
-extern "C" void verilog_pmem_write(int addr, int data, int len);
+extern "C" void verilog_pmem_write(int addr, int data, char mask);
 
-VL_INLINE_OPT void Vysyx_25040109_top___024root____Vdpiimwrap_ysyx_25040109_top__DOT__mem__DOT__verilog_pmem_write_TOP(IData/*31:0*/ addr, IData/*31:0*/ data, IData/*31:0*/ len) {
+VL_INLINE_OPT void Vysyx_25040109_top___024root____Vdpiimwrap_ysyx_25040109_top__DOT__mem__DOT__verilog_pmem_write_TOP(IData/*31:0*/ addr, IData/*31:0*/ data, CData/*7:0*/ mask) {
     VL_DEBUG_IF(VL_DBG_MSGF("+    Vysyx_25040109_top___024root____Vdpiimwrap_ysyx_25040109_top__DOT__mem__DOT__verilog_pmem_write_TOP\n"); );
     // Body
     int addr__Vcvt;
     for (size_t addr__Vidx = 0; addr__Vidx < 1; ++addr__Vidx) addr__Vcvt = addr;
     int data__Vcvt;
     for (size_t data__Vidx = 0; data__Vidx < 1; ++data__Vidx) data__Vcvt = data;
-    int len__Vcvt;
-    for (size_t len__Vidx = 0; len__Vidx < 1; ++len__Vidx) len__Vcvt = len;
-    verilog_pmem_write(addr__Vcvt, data__Vcvt, len__Vcvt);
+    char mask__Vcvt;
+    for (size_t mask__Vidx = 0; mask__Vidx < 1; ++mask__Vidx) mask__Vcvt = mask;
+    verilog_pmem_write(addr__Vcvt, data__Vcvt, mask__Vcvt);
 }
 
 #ifdef VL_DEBUG
