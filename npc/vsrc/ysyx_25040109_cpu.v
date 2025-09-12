@@ -54,20 +54,15 @@ module ysyx_25040109_cpu (
     wire [31:0] lsu_rdata_internal;  // 从LSU的rdata
 
 
-    wire [7:0] selected_byte; // 用于存放选择出的字节
-    reg  [7:0] selected_byte_reg;
+ 
 
     // 字节选择器 (Byte Selector) - 组合逻辑
-    always @(*) begin
-        case (alu_result[1:0])
-            2'b00:   selected_byte_reg = lsu_rdata_internal[7:0];
-            2'b01:   selected_byte_reg = lsu_rdata_internal[15:8];
-            2'b10:   selected_byte_reg = lsu_rdata_internal[23:16];
-            2'b11:   selected_byte_reg = lsu_rdata_internal[31:24];
-            default: selected_byte_reg = 8'h00; // 默认值，理论上不会到达
-        endcase
-    end
-    assign selected_byte = selected_byte_reg;
+    wire [7:0] selected_byte; // 声明一个 wire
+    assign selected_byte = 
+        (alu_result[1:0] == 2'b00) ? lsu_rdata_internal[7:0] :
+        (alu_result[1:0] == 2'b01) ? lsu_rdata_internal[15:8] :
+        (alu_result[1:0] == 2'b10) ? lsu_rdata_internal[23:16] :
+                                    lsu_rdata_internal[31:24];
 
 
     always @(posedge clk) begin
@@ -167,6 +162,7 @@ end
     // EXU 模块
 
     ysyx_25040109_EXU exu (
+        .inst(inst_reg),
         .pc(pc_current),
         .rs1_data(rs1_data),
         .rs2_data(rs2_data),

@@ -3,7 +3,7 @@ module ysyx_25040109_IFU (
     input             rst,
     input             fetch_en,
     input  [31:0]     pc,
-    output            fetch_done,
+    output reg fetch_done,
     output [31:0]     inst,
     output reg        ifu_reqValid,
     output reg [31:0] ifu_addr,
@@ -20,6 +20,7 @@ module ysyx_25040109_IFU (
             state <= S_IDLE;
             ifu_reqValid <= 0;
             inst_reg <= 0;
+            fetch_done <= 0;
         end else begin
             case (state)
                 S_IDLE: begin
@@ -27,8 +28,12 @@ module ysyx_25040109_IFU (
                         ifu_reqValid <= 1;
                         ifu_addr <= pc;
                         state <= S_WAIT;
+                        fetch_done <= 0;
                     end else begin
                         ifu_reqValid <= 0;
+                        ifu_addr <= ifu_addr;
+                        state    <= S_IDLE;
+                        fetch_done <= 0;
                     end
                 end
                 S_WAIT: begin
@@ -36,12 +41,12 @@ module ysyx_25040109_IFU (
                     if (ifu_respValid) begin
                         inst_reg <= ifu_rdata;
                         state <= S_IDLE;
+                        fetch_done <= 1;
                     end
                 end
             endcase
         end
     end
-    assign fetch_done = (state == S_WAIT) && ifu_respValid;
     assign inst = inst_reg;
 endmodule
 

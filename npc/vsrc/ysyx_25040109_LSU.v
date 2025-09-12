@@ -54,6 +54,7 @@ module ysyx_25040109_LSU (
                         state <= S_WAIT;
                     end else begin
                         lsu_reqValid <= 0;
+                         lsu_wmask <= 0;
                     end
                 end
                 S_WAIT: begin

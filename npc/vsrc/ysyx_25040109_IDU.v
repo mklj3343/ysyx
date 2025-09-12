@@ -42,7 +42,7 @@ module ysyx_25040109_IDU (
                  (is_store)        ? imm_s_ext :
                                      imm_i_ext;
 
-assign reg_write_en = is_lui || is_addi || is_add || is_jalr || is_load || is_csrrw;
+assign reg_write_en = is_lui || is_addi || is_add || is_jalr || is_load || is_csrrw ;
 
 assign inst_invalid = !(is_lui || is_addi || is_add || is_jalr || is_load || is_store  || is_csrrw);
 

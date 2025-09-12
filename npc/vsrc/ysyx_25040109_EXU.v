@@ -1,5 +1,6 @@
 module ysyx_25040109_EXU (
 
+    input  [31:0] inst, 
     input  [31:0] pc,
     input  [31:0] rs1_data,
     input  [31:0] rs2_data,
@@ -27,7 +28,7 @@ wire [31:0] jalr_target = (rs1_data + imm) & ~1;
 
 
 always @(*) begin
-    $display("jalr:0x%08x  next_pc:0x%08x pc+4:0x%08x,rs1_data:%d , imm:%d\n",jalr_target,next_pc,pc+4,rs1_data,imm);
+    $display("jalr:0x%08x  next_pc:0x%08x pc+4:0x%08x,rs1_data:%d , imm:%d,inst:0x%08x\n",jalr_target,next_pc,pc+4,rs1_data,imm,inst);
 end
 
 assign next_pc = (inst_invalid) ? (pc + 4) : 
