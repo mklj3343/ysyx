@@ -25,18 +25,14 @@ module ysyx_25040109_mem (
 
         reg [2:0] write_len;
     always @(*) begin
-                case (lsu_wmask)
-            // 写入1个字节 (sb) 的所有情况
+        case (lsu_wmask)
             4'b0001, 4'b0010, 4'b0100, 4'b1000: write_len = 1;
-            
-            // 写入2个字节 (sh) 的所有情况
-            4'b0011, 4'b1100:                     write_len = 2;
-            
-            // 写入4个字节 (sw) 的情况
-            4'b1111:                               write_len = 4;
-            
-            // 默认情况，对于无效的掩码，长度为0
-            default:                               write_len = 0;
+
+            4'b0011, 4'b1100:                   write_len = 2;
+
+            4'b1111:                            write_len = 4;
+
+            default:                            write_len = 0;
         endcase
     end
 
@@ -45,6 +41,8 @@ module ysyx_25040109_mem (
         if (rst) begin
             ifu_respValid <= 0;
             lsu_respValid <= 0;
+            ifu_rdata     <= 32'b0; // 复位时明确赋值
+            lsu_rdata     <= 32'b0; // 复位时明确赋值
         end else begin
             // IFU端口: 只读，只有reqValid时工作
             ifu_respValid <= ifu_reqValid;
@@ -54,7 +52,11 @@ module ysyx_25040109_mem (
 `else
                 ifu_rdata <= 32'h0;  // 综合时占位
 `endif
-            end
+            end else begin
+            // --- 显式赋值 ---
+            // 当没有请求时，可以让rdata保持原值或赋一个默认值
+            ifu_rdata <= ifu_rdata; 
+        end
 
             // LSU端口: 读/写，只有reqValid时工作
             lsu_respValid <= lsu_reqValid;
@@ -69,8 +71,12 @@ module ysyx_25040109_mem (
 `ifndef SYNTHESIS
                     verilog_pmem_write(lsu_addr, lsu_wdata, {5'b0,write_len});
 `endif
+                    lsu_rdata <= lsu_rdata; 
                 end
-            end
+            end else begin
+
+            lsu_rdata <= lsu_rdata;
+        end
         end
     end
 

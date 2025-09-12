@@ -38,9 +38,8 @@ module ysyx_25040109_IDU (
     wire [31:0] imm_i_ext = {{20{imm_i[11]}}, imm_i};
     wire [31:0] imm_s_ext = {{20{imm_s[11]}}, imm_s};
 
-    assign imm = is_lui            ? imm_u_ext :
-                 (is_store)        ? imm_s_ext :
-                                     imm_i_ext;
+    assign imm = is_lui       ? imm_u_ext :
+                 (is_store)   ? imm_s_ext : imm_i_ext;
 
 assign reg_write_en = is_lui || is_addi || is_add || is_jalr || is_load || is_csrrw ;
 

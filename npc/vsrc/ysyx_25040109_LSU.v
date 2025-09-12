@@ -39,9 +39,13 @@ module ysyx_25040109_LSU (
 
     always @(posedge clk) begin
         if (rst) begin
-            state <= S_IDLE;
-            lsu_reqValid <= 0;
-            rdata_reg <= 0;
+        state        <= S_IDLE;
+        lsu_reqValid <= 0;
+        lsu_addr     <= 32'b0; // 复位时明确赋值
+        lsu_wen      <= 0;
+        lsu_wdata    <= 32'b0;
+        lsu_wmask    <= 4'b0;
+        rdata_reg    <= 32'b0;
         end else begin
             case (state)
                 S_IDLE: begin
@@ -54,19 +58,37 @@ module ysyx_25040109_LSU (
                         state <= S_WAIT;
                     end else begin
                         lsu_reqValid <= 0;
-                         lsu_wmask <= 0;
+                        lsu_wmask <= 0;
+                        lsu_addr     <= lsu_addr;
+                        lsu_wen      <= 0; // 或者 lsu_wen <= lsu_wen
+                        lsu_wdata    <= lsu_wdata;
+                        state        <= S_IDLE;
                     end
+
+                     rdata_reg <= rdata_reg;
                 end
-                S_WAIT: begin
-                    lsu_reqValid <= 0;
-                    lsu_wen <= 0;
-                    if (lsu_respValid) begin
-                        if (is_load) begin
-                            rdata_reg <= lsu_rdata;
-                        end
-                        state <= S_IDLE;
+            S_WAIT: begin
+                lsu_reqValid <= 0; 
+                lsu_wen      <= 0; 
+                if (lsu_respValid) begin
+                    if (is_load) begin
+                        rdata_reg <= lsu_rdata; 
+                    end else begin
+
+                        rdata_reg <= rdata_reg;
                     end
+                    state <= S_IDLE;
+                end else begin
+
+                    state     <= S_WAIT;
+                    rdata_reg <= rdata_reg; 
                 end
+
+                lsu_addr  <= lsu_addr;
+                lsu_wdata <= lsu_wdata;
+                lsu_wmask <= lsu_wmask;
+            end
+                
             endcase
         end
     end

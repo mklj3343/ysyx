@@ -19,7 +19,8 @@ module ysyx_25040109_IFU (
         if (rst) begin
             state <= S_IDLE;
             ifu_reqValid <= 0;
-            inst_reg <= 0;
+            ifu_addr     <= 32'b0; 
+            inst_reg <= 32'b0;
             fetch_done <= 0;
         end else begin
             case (state)
@@ -29,11 +30,13 @@ module ysyx_25040109_IFU (
                         ifu_addr <= pc;
                         state <= S_WAIT;
                         fetch_done <= 0;
+                        inst_reg     <= inst_reg;
                     end else begin
                         ifu_reqValid <= 0;
                         ifu_addr <= ifu_addr;
                         state    <= S_IDLE;
                         fetch_done <= 0;
+                        inst_reg     <= inst_reg;
                     end
                 end
                 S_WAIT: begin
@@ -42,7 +45,12 @@ module ysyx_25040109_IFU (
                         inst_reg <= ifu_rdata;
                         state <= S_IDLE;
                         fetch_done <= 1;
-                    end
+                    end  else begin
+                    state      <= S_WAIT;
+                    fetch_done <= 0;       // 完成信号保持为低
+                    inst_reg   <= inst_reg;  // 指令寄存器保持不变
+                end
+                 ifu_addr <= ifu_addr;
                 end
             endcase
         end

@@ -1,6 +1,7 @@
 module ysyx_25040109_EXU (
-
+ /* verilator lint_off UNUSED */
     input  [31:0] inst, 
+     /* verilator lint_off UNUSED */
     input  [31:0] pc,
     input  [31:0] rs1_data,
     input  [31:0] rs2_data,
@@ -27,9 +28,11 @@ assign alu_result = (is_jalr) ? (pc + 4) : alu_out;
 wire [31:0] jalr_target = (rs1_data + imm) & ~1;  
 
 
+/*
 always @(*) begin
     $display("jalr:0x%08x  next_pc:0x%08x pc+4:0x%08x,rs1_data:%d , imm:%d,inst:0x%08x\n",jalr_target,next_pc,pc+4,rs1_data,imm,inst);
 end
+*/
 
 assign next_pc = (inst_invalid) ? (pc + 4) : 
                  (is_jalr) ? jalr_target : (pc + 4);
