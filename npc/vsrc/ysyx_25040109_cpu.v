@@ -16,6 +16,7 @@ module ysyx_25040109_cpu (
     output        lsu_reqValid,
     output [31:0] lsu_addr,
     output        lsu_wen,
+    output [2:0]  lsu_rlen, 
     output [31:0] lsu_wdata,
     output [3:0]  lsu_wmask,
     input         lsu_respValid,
@@ -49,7 +50,7 @@ module ysyx_25040109_cpu (
     wire        inst_invalid;
     wire [4:0]  rd_addr;
     wire [2:0]  funct3;
-    wire        is_add, is_lui, is_jalr, is_csrrw;
+    wire        is_add, is_lui, is_jalr, is_csrrw,is_addi;
     wire [11:0] csr_addr;
     wire [31:0] csr_rdata;
     reg  [63:0] mcycle_counter;
@@ -85,7 +86,7 @@ module ysyx_25040109_cpu (
         // --- 新增的详细诊断信息 ---
  `ifndef SYNTHESIS
         if(state != S_FETCH && state != S_WAIT_INST) begin // 过滤掉取指阶段的打印，聚焦关键状态
-            $display("PC: %h, INST: %h, STATE: %d, stall: %b, prev_load: %b, prev_rd: %d, lsu_done: %b, lsu_rdata: %h, reg_wen: %b, rd: %d, wdata: %h",
+           /* $display("PC: %h, INST: %h, STATE: %d, stall: %b, prev_load: %b, prev_rd: %d, lsu_done: %b, lsu_rdata: %h, reg_wen: %b, rd: %d, wdata: %h",
                 pc_current,
                 inst_reg,
                 state,
@@ -97,7 +98,7 @@ module ysyx_25040109_cpu (
                 reg_wen,
                 rd_addr,
                 writeback_data
-            );
+            );*/
         end
  `endif
 
@@ -110,6 +111,18 @@ module ysyx_25040109_cpu (
             prev_rd_addr <= 5'b0;
      end else begin 
        mcycle_counter <= mcycle_counter + 1; 
+
+        `ifndef SYNTHESIS
+            // 当且仅当一条ADD指令处于执行阶段时，打印其输入和输出
+            if (state == S_EXECUTE ) begin
+                if(is_add)begin
+                
+                $display("[ADD Check] PC: %h, rs1_data: %d (%h), rs2_data: %d (%h) -- ALU_RESULT --> %d (%h)",
+                         pc_current, rs1_data, rs1_data, rs2_data, rs2_data, alu_result, alu_result);
+                end 
+
+        end
+ `endif
 
             //prev_is_load <= 0;
 
@@ -196,6 +209,7 @@ module ysyx_25040109_cpu (
         .reg_write_en(reg_write_en),
         .funct3(funct3),
         .inst_invalid(inst_invalid),
+        .is_addi(is_addi),
         .is_add(is_add),
         .is_lui(is_lui),
         .is_jalr(is_jalr),
@@ -214,6 +228,7 @@ module ysyx_25040109_cpu (
         .alu_result(alu_result),
         .next_pc(next_pc),
         .inst_invalid(inst_invalid),
+        .is_addi(is_addi),
         .is_add(is_add),
         .is_lui(is_lui),
         .is_jalr(is_jalr)
@@ -263,6 +278,7 @@ module ysyx_25040109_cpu (
 
     // 实例化LSU
     ysyx_25040109_LSU lsu (
+        .lsu_rlen(lsu_rlen),
         .clk(clk),
         .rst(rst),
         .lsu_en(lsu_en),

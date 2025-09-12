@@ -25,7 +25,7 @@
  * This is useful when you use the `si' command.
  * You can modify this value as you want.
  */
-#define MAX_INST_TO_PRINT 100
+#define MAX_INST_TO_PRINT 0
 
 // 这会将整个 CPU 结构体（包括所有寄存器）初始化为 0
 CPU_state cpu = {};

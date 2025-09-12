@@ -19,6 +19,7 @@ module ysyx_25040109_top (
     wire        lsu_reqValid;
     wire [31:0] lsu_addr;
     wire        lsu_wen;
+    wire  [2:0]      lsu_rlen;
     wire [31:0] lsu_wdata;
     wire [3:0]  lsu_wmask;
     wire        lsu_respValid;
@@ -27,6 +28,7 @@ module ysyx_25040109_top (
     wire [31:0] pc_internal, inst_internal, next_pc_internal;
 
     ysyx_25040109_cpu cpu (
+        .lsu_rlen(lsu_rlen),
         .clk(clk),
         .rst(rst),
         .ifu_reqValid(ifu_reqValid),
@@ -49,6 +51,7 @@ module ysyx_25040109_top (
     );
 
     ysyx_25040109_mem mem (
+        .lsu_rlen(lsu_rlen),
         .clk(clk),
         .rst(rst),
         .ifu_reqValid(ifu_reqValid),

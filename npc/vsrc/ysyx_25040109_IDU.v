@@ -9,6 +9,7 @@ module ysyx_25040109_IDU (
     output        inst_invalid,
 
     output        is_add,
+    output        is_addi,
     output        is_lui,
     output        is_jalr,
     output        is_csrrw,
@@ -21,7 +22,7 @@ module ysyx_25040109_IDU (
     assign csr_addr = inst[31:20];
 
     assign is_lui = (opcode == 7'b0110111);
-    wire is_addi = (opcode == 7'b0010011) && (funct3 == 3'b000);
+    assign is_addi = (opcode == 7'b0010011) && (funct3 == 3'b000); 
     assign is_add = (opcode == 7'b0110011) && (funct3 == 3'b000) && (inst[31:25] == 7'b0000000);
     assign is_jalr = (opcode == 7'b1100111) && (funct3 == 3'b000);
     assign is_load = (opcode == 7'b0000011) && (funct3 == 3'b010 || funct3 == 3'b100);  // lw/lbu

@@ -12,12 +12,13 @@ module ysyx_25040109_mem (
     input        lsu_wen,
     input [31:0] lsu_wdata,
     input [3:0]  lsu_wmask,
+    input [2:0]  lsu_rlen, 
     output reg   lsu_respValid,
     output reg [31:0] lsu_rdata
 );
 
 `ifndef SYNTHESIS
-    import "DPI-C" function int verilog_pmem_read(input int addr);
+    import "DPI-C" function int verilog_pmem_read(input int addr,input int len);
     import "DPI-C" function void verilog_pmem_write(input int addr, input int data, input byte mask);
 `endif
 
@@ -48,7 +49,7 @@ module ysyx_25040109_mem (
             ifu_respValid <= ifu_reqValid;
             if (ifu_reqValid) begin
 `ifndef SYNTHESIS
-                ifu_rdata <= verilog_pmem_read(ifu_addr);
+                ifu_rdata <= verilog_pmem_read(ifu_addr,{29'b0, lsu_rlen});
 `else
                 ifu_rdata <= 32'h0;  // 综合时占位
 `endif
@@ -63,7 +64,7 @@ module ysyx_25040109_mem (
             if (lsu_reqValid) begin
                 if (!lsu_wen) begin
 `ifndef SYNTHESIS
-                    lsu_rdata <= verilog_pmem_read(lsu_addr);
+                    lsu_rdata <= verilog_pmem_read(lsu_addr,{29'b0, lsu_rlen});
 `else
                     lsu_rdata <= 32'h0;
 `endif

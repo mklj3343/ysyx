@@ -10,6 +10,7 @@ module ysyx_25040109_EXU (
     input         is_add,
     input         is_lui,
     input         is_jalr,
+    input         is_addi,
 
     output [31:0] alu_result,
     output [31:0] next_pc

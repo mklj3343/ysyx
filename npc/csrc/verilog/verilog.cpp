@@ -7,11 +7,11 @@
 extern Decode lastest_decode;
 
 
-extern "C" int  verilog_pmem_read(paddr_t addr)
+extern "C" int  verilog_pmem_read(paddr_t addr,int len)
 {
      
    // mtrace_record('R', addr, 4, *data);
-   return paddr_read(addr, 4);
+   return paddr_read(addr, len);
 }
 
 extern "C" void verilog_pmem_write(paddr_t addr, uint32_t data,uint32_t len){

@@ -61,15 +61,17 @@ VL_INLINE_OPT void Vysyx_25040109_top___024root____Vdpiimwrap_ysyx_25040109_top_
     update_cpu_state(pc__Vcvt, &regs__Vopenarray);
 }
 
-extern "C" int verilog_pmem_read(int addr);
+extern "C" int verilog_pmem_read(int addr, int len);
 
-VL_INLINE_OPT void Vysyx_25040109_top___024root____Vdpiimwrap_ysyx_25040109_top__DOT__mem__DOT__verilog_pmem_read_TOP(IData/*31:0*/ addr, IData/*31:0*/ &verilog_pmem_read__Vfuncrtn) {
+VL_INLINE_OPT void Vysyx_25040109_top___024root____Vdpiimwrap_ysyx_25040109_top__DOT__mem__DOT__verilog_pmem_read_TOP(IData/*31:0*/ addr, IData/*31:0*/ len, IData/*31:0*/ &verilog_pmem_read__Vfuncrtn) {
     VL_DEBUG_IF(VL_DBG_MSGF("+    Vysyx_25040109_top___024root____Vdpiimwrap_ysyx_25040109_top__DOT__mem__DOT__verilog_pmem_read_TOP\n"); );
     // Body
     int addr__Vcvt;
     for (size_t addr__Vidx = 0; addr__Vidx < 1; ++addr__Vidx) addr__Vcvt = addr;
+    int len__Vcvt;
+    for (size_t len__Vidx = 0; len__Vidx < 1; ++len__Vidx) len__Vcvt = len;
     int verilog_pmem_read__Vfuncrtn__Vcvt;
-    verilog_pmem_read__Vfuncrtn__Vcvt = verilog_pmem_read(addr__Vcvt);
+    verilog_pmem_read__Vfuncrtn__Vcvt = verilog_pmem_read(addr__Vcvt, len__Vcvt);
     verilog_pmem_read__Vfuncrtn = verilog_pmem_read__Vfuncrtn__Vcvt;
 }
 

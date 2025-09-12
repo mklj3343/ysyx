@@ -15,6 +15,7 @@ module ysyx_25040109_LSU (
     output reg        lsu_wen,
     output reg [31:0] lsu_wdata,
     output reg [3:0]  lsu_wmask,
+    output reg [2:0]  lsu_rlen,
     input             lsu_respValid,
     input  [31:0]     lsu_rdata
 );
@@ -44,6 +45,7 @@ module ysyx_25040109_LSU (
         lsu_addr     <= 32'b0; // 复位时明确赋值
         lsu_wen      <= 0;
         lsu_wdata    <= 32'b0;
+        lsu_rlen     <= 3'b0; 
         lsu_wmask    <= 4'b0;
         rdata_reg    <= 32'b0;
         end else begin
@@ -56,8 +58,23 @@ module ysyx_25040109_LSU (
                         lsu_wdata <= wdata_shift;
                         lsu_wmask <= wmask_calc;
                         state <= S_WAIT;
+
+                             
+                        if (is_load) begin
+                            case(funct3)
+                                // lbu (funct3=100) -> 读 1 字节
+                                3'b100:   lsu_rlen <= 3'd1;
+                                // lw (funct3=010) -> 读 4 字节
+                                3'b010:   lsu_rlen <= 3'd4;
+                                default:  lsu_rlen <= 3'd0; // 其他load指令暂不支持
+                            endcase
+                        end else begin
+                            lsu_rlen <= 3'd0; // store操作，读取长度为0
+                        end
+
                     end else begin
                         lsu_reqValid <= 0;
+                        lsu_rlen     <= 0;
                         lsu_wmask <= 0;
                         lsu_addr     <= lsu_addr;
                         lsu_wen      <= 0; // 或者 lsu_wen <= lsu_wen
@@ -87,6 +104,7 @@ module ysyx_25040109_LSU (
                 lsu_addr  <= lsu_addr;
                 lsu_wdata <= lsu_wdata;
                 lsu_wmask <= lsu_wmask;
+                lsu_rlen  <= lsu_rlen;
             end
                 
             endcase
