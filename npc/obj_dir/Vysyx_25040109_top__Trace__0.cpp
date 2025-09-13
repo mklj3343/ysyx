@@ -104,8 +104,11 @@ void Vysyx_25040109_top___024root__trace_chg_sub_0(Vysyx_25040109_top___024root*
                                           >> 0x14U))),5);
         bufp->chgBit(oldp+47,(((IData)(vlSelf->ysyx_25040109_top__DOT__cpu__DOT__prev_is_load) 
                                & ((0U != (IData)(vlSelf->ysyx_25040109_top__DOT__cpu__DOT__prev_rd_addr)) 
-                                  & ((0x37U != (0x7fU 
-                                                & vlSelf->ysyx_25040109_top__DOT__cpu__DOT__inst_reg)) 
+                                  & ((~ ((0x37U == 
+                                          (0x7fU & vlSelf->ysyx_25040109_top__DOT__cpu__DOT__inst_reg)) 
+                                         | (0x73U == 
+                                            (0x7fU 
+                                             & vlSelf->ysyx_25040109_top__DOT__cpu__DOT__inst_reg)))) 
                                      & (((IData)(vlSelf->ysyx_25040109_top__DOT__cpu__DOT__prev_rd_addr) 
                                          == (0x1fU 
                                              & (vlSelf->ysyx_25040109_top__DOT__cpu__DOT__inst_reg 
@@ -114,55 +117,37 @@ void Vysyx_25040109_top___024root__trace_chg_sub_0(Vysyx_25040109_top___024root*
                                            == (0x1fU 
                                                & (vlSelf->ysyx_25040109_top__DOT__cpu__DOT__inst_reg 
                                                   >> 0x14U)))))))));
-        bufp->chgCData(oldp+48,((0xffU & ((0U == (3U 
-                                                  & vlSelf->ysyx_25040109_top__DOT__cpu__DOT__alu_result))
-                                           ? vlSelf->ysyx_25040109_top__DOT__cpu__DOT__lsu__DOT__rdata_reg
-                                           : ((1U == 
-                                               (3U 
-                                                & vlSelf->ysyx_25040109_top__DOT__cpu__DOT__alu_result))
-                                               ? (vlSelf->ysyx_25040109_top__DOT__cpu__DOT__lsu__DOT__rdata_reg 
-                                                  >> 8U)
-                                               : ((2U 
-                                                   == 
-                                                   (3U 
-                                                    & vlSelf->ysyx_25040109_top__DOT__cpu__DOT__alu_result))
-                                                   ? 
-                                                  (vlSelf->ysyx_25040109_top__DOT__cpu__DOT__lsu__DOT__rdata_reg 
-                                                   >> 0x10U)
-                                                   : 
-                                                  (vlSelf->ysyx_25040109_top__DOT__cpu__DOT__lsu__DOT__rdata_reg 
-                                                   >> 0x18U)))))),8);
-        bufp->chgBit(oldp+49,((((IData)(vlSelf->ysyx_25040109_top__DOT__cpu__DOT____VdfgTmp_hd745c079__0) 
+        bufp->chgBit(oldp+48,((((IData)(vlSelf->ysyx_25040109_top__DOT__cpu__DOT____VdfgTmp_hd745c079__0) 
                                 & (3U == (IData)(vlSelf->ysyx_25040109_top__DOT__cpu__DOT__state))) 
                                | ((4U == (IData)(vlSelf->ysyx_25040109_top__DOT__cpu__DOT__state)) 
                                   & (IData)(vlSelf->ysyx_25040109_top__DOT__cpu__DOT__lsu_done)))));
-        bufp->chgBit(oldp+50,((((3U == (IData)(vlSelf->ysyx_25040109_top__DOT__cpu__DOT__state)) 
+        bufp->chgBit(oldp+49,((((3U == (IData)(vlSelf->ysyx_25040109_top__DOT__cpu__DOT__state)) 
                                 & ((IData)(vlSelf->ysyx_25040109_top__DOT__cpu__DOT__reg_write_en) 
                                    & ((IData)(vlSelf->ysyx_25040109_top__DOT__cpu__DOT____VdfgTmp_hd745c079__0) 
                                       & (IData)(vlSelf->ysyx_25040109_top__DOT__cpu__DOT____VdfgTmp_hf3066aec__0)))) 
                                | ((5U == (IData)(vlSelf->ysyx_25040109_top__DOT__cpu__DOT__state)) 
                                   & ((IData)(vlSelf->ysyx_25040109_top__DOT__cpu__DOT____VdfgTmp_hf3066aec__0) 
                                      & (IData)(vlSelf->ysyx_25040109_top__DOT__cpu__DOT__reg_write_en))))));
-        bufp->chgIData(oldp+51,(((0x37U == (0x7fU & vlSelf->ysyx_25040109_top__DOT__cpu__DOT__inst_reg))
+        bufp->chgIData(oldp+50,(((0x37U == (0x7fU & vlSelf->ysyx_25040109_top__DOT__cpu__DOT__inst_reg))
                                   ? 0U : vlSelf->ysyx_25040109_top__DOT__cpu__DOT__regfile__DOT__rdata1_reg)),32);
-        bufp->chgIData(oldp+52,(((IData)(vlSelf->ysyx_25040109_top__DOT__cpu__DOT__is_add)
+        bufp->chgIData(oldp+51,(((IData)(vlSelf->ysyx_25040109_top__DOT__cpu__DOT__is_add)
                                   ? vlSelf->ysyx_25040109_top__DOT__cpu__DOT__regfile__DOT__rdata2_reg
                                   : vlSelf->ysyx_25040109_top__DOT__cpu__DOT__imm)),32);
-        bufp->chgIData(oldp+53,((((0x37U == (0x7fU 
+        bufp->chgIData(oldp+52,((((0x37U == (0x7fU 
                                              & vlSelf->ysyx_25040109_top__DOT__cpu__DOT__inst_reg))
                                    ? 0U : vlSelf->ysyx_25040109_top__DOT__cpu__DOT__regfile__DOT__rdata1_reg) 
                                  + ((IData)(vlSelf->ysyx_25040109_top__DOT__cpu__DOT__is_add)
                                      ? vlSelf->ysyx_25040109_top__DOT__cpu__DOT__regfile__DOT__rdata2_reg
                                      : vlSelf->ysyx_25040109_top__DOT__cpu__DOT__imm))),32);
-        bufp->chgIData(oldp+54,((0xfffffffeU & (vlSelf->ysyx_25040109_top__DOT__cpu__DOT__imm 
+        bufp->chgIData(oldp+53,((0xfffffffeU & (vlSelf->ysyx_25040109_top__DOT__cpu__DOT__imm 
                                                 + vlSelf->ysyx_25040109_top__DOT__cpu__DOT__regfile__DOT__rdata1_reg))),32);
-        bufp->chgCData(oldp+55,((0x7fU & vlSelf->ysyx_25040109_top__DOT__cpu__DOT__inst_reg)),7);
-        bufp->chgIData(oldp+56,((0xfffff000U & vlSelf->ysyx_25040109_top__DOT__cpu__DOT__inst_reg)),32);
-        bufp->chgIData(oldp+57,((((- (IData)((vlSelf->ysyx_25040109_top__DOT__cpu__DOT__inst_reg 
+        bufp->chgCData(oldp+54,((0x7fU & vlSelf->ysyx_25040109_top__DOT__cpu__DOT__inst_reg)),7);
+        bufp->chgIData(oldp+55,((0xfffff000U & vlSelf->ysyx_25040109_top__DOT__cpu__DOT__inst_reg)),32);
+        bufp->chgIData(oldp+56,((((- (IData)((vlSelf->ysyx_25040109_top__DOT__cpu__DOT__inst_reg 
                                               >> 0x1fU))) 
                                   << 0xcU) | (vlSelf->ysyx_25040109_top__DOT__cpu__DOT__inst_reg 
                                               >> 0x14U))),32);
-        bufp->chgIData(oldp+58,((((- (IData)((vlSelf->ysyx_25040109_top__DOT__cpu__DOT__inst_reg 
+        bufp->chgIData(oldp+57,((((- (IData)((vlSelf->ysyx_25040109_top__DOT__cpu__DOT__inst_reg 
                                               >> 0x1fU))) 
                                   << 0xcU) | ((0xfe0U 
                                                & (vlSelf->ysyx_25040109_top__DOT__cpu__DOT__inst_reg 
@@ -170,83 +155,35 @@ void Vysyx_25040109_top___024root__trace_chg_sub_0(Vysyx_25040109_top___024root*
                                               | (0x1fU 
                                                  & (vlSelf->ysyx_25040109_top__DOT__cpu__DOT__inst_reg 
                                                     >> 7U))))),32);
-        bufp->chgBit(oldp+59,(vlSelf->ysyx_25040109_top__DOT__cpu__DOT__ifu__DOT__state));
-        bufp->chgBit(oldp+60,(vlSelf->ysyx_25040109_top__DOT__cpu__DOT__lsu__DOT__state));
-        bufp->chgCData(oldp+61,((3U & vlSelf->ysyx_25040109_top__DOT__cpu__DOT__alu_result)),2);
-        bufp->chgCData(oldp+62,((0xfU & ((0U == (7U 
-                                                 & (vlSelf->ysyx_25040109_top__DOT__cpu__DOT__inst_reg 
-                                                    >> 0xcU)))
-                                          ? ((IData)(1U) 
-                                             << (3U 
-                                                 & vlSelf->ysyx_25040109_top__DOT__cpu__DOT__alu_result))
-                                          : ((1U == 
-                                              (7U & 
-                                               (vlSelf->ysyx_25040109_top__DOT__cpu__DOT__inst_reg 
-                                                >> 0xcU)))
-                                              ? ((3U 
-                                                  >= 
-                                                  (2U 
-                                                   & vlSelf->ysyx_25040109_top__DOT__cpu__DOT__alu_result))
-                                                  ? 
-                                                 ((IData)(3U) 
-                                                  << 
-                                                  (2U 
-                                                   & vlSelf->ysyx_25040109_top__DOT__cpu__DOT__alu_result))
-                                                  : 0U)
-                                              : 0xfU)))),4);
-        bufp->chgIData(oldp+63,(((0U == (7U & (vlSelf->ysyx_25040109_top__DOT__cpu__DOT__inst_reg 
-                                               >> 0xcU)))
-                                  ? ((0x1fU >= (0x18U 
-                                                & (vlSelf->ysyx_25040109_top__DOT__cpu__DOT__alu_result 
-                                                   << 3U)))
-                                      ? ((0xffU & vlSelf->ysyx_25040109_top__DOT__cpu__DOT__regfile__DOT__rdata2_reg) 
-                                         << (0x18U 
-                                             & (vlSelf->ysyx_25040109_top__DOT__cpu__DOT__alu_result 
-                                                << 3U)))
-                                      : 0U) : ((1U 
-                                                == 
-                                                (7U 
-                                                 & (vlSelf->ysyx_25040109_top__DOT__cpu__DOT__inst_reg 
-                                                    >> 0xcU)))
-                                                ? (
-                                                   (0x1fU 
-                                                    >= 
-                                                    (0x10U 
-                                                     & (vlSelf->ysyx_25040109_top__DOT__cpu__DOT__alu_result 
-                                                        << 3U)))
-                                                    ? 
-                                                   ((0xffffU 
-                                                     & vlSelf->ysyx_25040109_top__DOT__cpu__DOT__regfile__DOT__rdata2_reg) 
-                                                    << 
-                                                    (0x10U 
-                                                     & (vlSelf->ysyx_25040109_top__DOT__cpu__DOT__alu_result 
-                                                        << 3U)))
-                                                    : 0U)
-                                                : vlSelf->ysyx_25040109_top__DOT__cpu__DOT__regfile__DOT__rdata2_reg))),32);
-        bufp->chgIData(oldp+64,(vlSelf->ysyx_25040109_top__DOT__cpu__DOT__regfile__DOT__rf[0]),32);
-        bufp->chgIData(oldp+65,(vlSelf->ysyx_25040109_top__DOT__cpu__DOT__regfile__DOT__rf[1]),32);
-        bufp->chgIData(oldp+66,(vlSelf->ysyx_25040109_top__DOT__cpu__DOT__regfile__DOT__rf[2]),32);
-        bufp->chgIData(oldp+67,(vlSelf->ysyx_25040109_top__DOT__cpu__DOT__regfile__DOT__rf[3]),32);
-        bufp->chgIData(oldp+68,(vlSelf->ysyx_25040109_top__DOT__cpu__DOT__regfile__DOT__rf[4]),32);
-        bufp->chgIData(oldp+69,(vlSelf->ysyx_25040109_top__DOT__cpu__DOT__regfile__DOT__rf[5]),32);
-        bufp->chgIData(oldp+70,(vlSelf->ysyx_25040109_top__DOT__cpu__DOT__regfile__DOT__rf[6]),32);
-        bufp->chgIData(oldp+71,(vlSelf->ysyx_25040109_top__DOT__cpu__DOT__regfile__DOT__rf[7]),32);
-        bufp->chgIData(oldp+72,(vlSelf->ysyx_25040109_top__DOT__cpu__DOT__regfile__DOT__rf[8]),32);
-        bufp->chgIData(oldp+73,(vlSelf->ysyx_25040109_top__DOT__cpu__DOT__regfile__DOT__rf[9]),32);
-        bufp->chgIData(oldp+74,(vlSelf->ysyx_25040109_top__DOT__cpu__DOT__regfile__DOT__rf[10]),32);
-        bufp->chgIData(oldp+75,(vlSelf->ysyx_25040109_top__DOT__cpu__DOT__regfile__DOT__rf[11]),32);
-        bufp->chgIData(oldp+76,(vlSelf->ysyx_25040109_top__DOT__cpu__DOT__regfile__DOT__rf[12]),32);
-        bufp->chgIData(oldp+77,(vlSelf->ysyx_25040109_top__DOT__cpu__DOT__regfile__DOT__rf[13]),32);
-        bufp->chgIData(oldp+78,(vlSelf->ysyx_25040109_top__DOT__cpu__DOT__regfile__DOT__rf[14]),32);
-        bufp->chgIData(oldp+79,(vlSelf->ysyx_25040109_top__DOT__cpu__DOT__regfile__DOT__rf[15]),32);
-        bufp->chgCData(oldp+80,(vlSelf->ysyx_25040109_top__DOT__mem__DOT__write_len),3);
+        bufp->chgBit(oldp+58,(vlSelf->ysyx_25040109_top__DOT__cpu__DOT__ifu__DOT__state));
+        bufp->chgBit(oldp+59,(vlSelf->ysyx_25040109_top__DOT__cpu__DOT__lsu__DOT__state));
+        bufp->chgIData(oldp+60,(vlSelf->ysyx_25040109_top__DOT__cpu__DOT__regfile__DOT__rf[0]),32);
+        bufp->chgIData(oldp+61,(vlSelf->ysyx_25040109_top__DOT__cpu__DOT__regfile__DOT__rf[1]),32);
+        bufp->chgIData(oldp+62,(vlSelf->ysyx_25040109_top__DOT__cpu__DOT__regfile__DOT__rf[2]),32);
+        bufp->chgIData(oldp+63,(vlSelf->ysyx_25040109_top__DOT__cpu__DOT__regfile__DOT__rf[3]),32);
+        bufp->chgIData(oldp+64,(vlSelf->ysyx_25040109_top__DOT__cpu__DOT__regfile__DOT__rf[4]),32);
+        bufp->chgIData(oldp+65,(vlSelf->ysyx_25040109_top__DOT__cpu__DOT__regfile__DOT__rf[5]),32);
+        bufp->chgIData(oldp+66,(vlSelf->ysyx_25040109_top__DOT__cpu__DOT__regfile__DOT__rf[6]),32);
+        bufp->chgIData(oldp+67,(vlSelf->ysyx_25040109_top__DOT__cpu__DOT__regfile__DOT__rf[7]),32);
+        bufp->chgIData(oldp+68,(vlSelf->ysyx_25040109_top__DOT__cpu__DOT__regfile__DOT__rf[8]),32);
+        bufp->chgIData(oldp+69,(vlSelf->ysyx_25040109_top__DOT__cpu__DOT__regfile__DOT__rf[9]),32);
+        bufp->chgIData(oldp+70,(vlSelf->ysyx_25040109_top__DOT__cpu__DOT__regfile__DOT__rf[10]),32);
+        bufp->chgIData(oldp+71,(vlSelf->ysyx_25040109_top__DOT__cpu__DOT__regfile__DOT__rf[11]),32);
+        bufp->chgIData(oldp+72,(vlSelf->ysyx_25040109_top__DOT__cpu__DOT__regfile__DOT__rf[12]),32);
+        bufp->chgIData(oldp+73,(vlSelf->ysyx_25040109_top__DOT__cpu__DOT__regfile__DOT__rf[13]),32);
+        bufp->chgIData(oldp+74,(vlSelf->ysyx_25040109_top__DOT__cpu__DOT__regfile__DOT__rf[14]),32);
+        bufp->chgIData(oldp+75,(vlSelf->ysyx_25040109_top__DOT__cpu__DOT__regfile__DOT__rf[15]),32);
+        bufp->chgIData(oldp+76,(vlSelf->ysyx_25040109_top__DOT__cpu__DOT__regfile__DOT__i),32);
+        bufp->chgCData(oldp+77,(((1U == (IData)(vlSelf->ysyx_25040109_top__DOT__lsu_wmask))
+                                  ? 1U : ((0xfU == (IData)(vlSelf->ysyx_25040109_top__DOT__lsu_wmask))
+                                           ? 4U : 0U))),3);
     }
-    bufp->chgBit(oldp+81,(vlSelf->clk));
-    bufp->chgBit(oldp+82,(vlSelf->rst));
-    bufp->chgIData(oldp+83,(vlSelf->pc),32);
-    bufp->chgIData(oldp+84,(vlSelf->inst),32);
-    bufp->chgIData(oldp+85,(vlSelf->p_count_number),32);
-    bufp->chgIData(oldp+86,(vlSelf->a0_out),32);
+    bufp->chgBit(oldp+78,(vlSelf->clk));
+    bufp->chgBit(oldp+79,(vlSelf->rst));
+    bufp->chgIData(oldp+80,(vlSelf->pc),32);
+    bufp->chgIData(oldp+81,(vlSelf->inst),32);
+    bufp->chgIData(oldp+82,(vlSelf->p_count_number),32);
+    bufp->chgIData(oldp+83,(vlSelf->a0_out),32);
 }
 
 void Vysyx_25040109_top___024root__trace_cleanup(void* voidSelf, VerilatedFst* /*unused*/) {

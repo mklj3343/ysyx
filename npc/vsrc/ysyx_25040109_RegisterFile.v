@@ -36,9 +36,12 @@ module ysyx_25040109_RegisterFile #(
 
 
  
-    
+    integer i;
     always @(posedge clk) begin
         if (rst) begin
+            for (i = 0; i < 16; i = i + 1) begin
+            rf[i] <= 32'h0;  // 初始化所有寄存器为0
+        end
             rdata1_reg <= 32'h0;
             rdata2_reg <= 32'h0;
         end else begin
