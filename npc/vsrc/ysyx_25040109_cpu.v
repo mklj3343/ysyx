@@ -61,7 +61,7 @@ module ysyx_25040109_cpu (
     wire [31:0] lsu_rdata_internal;  // 从LSU的rdata
 
 
-        wire [4:0] rs1_addr = inst_reg[19:15];
+    wire [4:0] rs1_addr = inst_reg[19:15];
     wire [4:0] rs2_addr = inst_reg[24:20];
     // 当上一条是load，且其目标寄存器(非x0)是当前指令的源寄存器时，暂停
     wire stall_condition = prev_is_load && (prev_rd_addr != 5'b0) &&
@@ -79,9 +79,6 @@ module ysyx_25040109_cpu (
         (alu_result[1:0] == 2'b10) ? lsu_rdata_internal[23:16] :
                                     lsu_rdata_internal[31:24];
 
-// =================================================================================
-    // 请用下面的 always 块完整替换掉您 cpu 模块中原来的 always @(posedge clk) 块
-    // =================================================================================
    always @(posedge clk) begin 
         // --- 新增的详细诊断信息 ---
  `ifndef SYNTHESIS
@@ -115,11 +112,16 @@ module ysyx_25040109_cpu (
         `ifndef SYNTHESIS
             // 当且仅当一条ADD指令处于执行阶段时，打印其输入和输出
             if (state == S_EXECUTE ) begin
-                if(is_add)begin
+              /*  if(is_add)begin
                 
-                $display("[ADD Check] PC: %h, rs1_data: %d (%h), rs2_data: %d (%h) -- ALU_RESULT --> %d (%h)",
-                         pc_current, rs1_data, rs1_data, rs2_data, rs2_data, alu_result, alu_result);
+                $display("[ADD]PC:%h, rs1_data: %d , rs2_data: %d  ALU: %d ,imm:%d   is_store:%d is_lui:%d\n",pc_current, rs1_data,  rs2_data, alu_result,$signed(imm),is_store,is_lui);
+
                 end 
+
+                if(is_addi)begin
+                                  $display("[ADDI] PC: %h, rs1_data: %d, rs2_data: %d ALU %d imm:%d is_store:%d,is_lui:%d\n",pc_current, rs1_data,  rs2_data,  alu_result,$signed(imm),is_store,is_lui);
+                                  
+                                  end*/
 
         end
  `endif

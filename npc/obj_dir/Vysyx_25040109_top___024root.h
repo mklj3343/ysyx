@@ -35,6 +35,7 @@ class Vysyx_25040109_top___024root final : public VerilatedModule {
     CData/*0:0*/ ysyx_25040109_top__DOT__cpu__DOT__is_add;
     CData/*0:0*/ ysyx_25040109_top__DOT__cpu__DOT__is_jalr;
     CData/*0:0*/ ysyx_25040109_top__DOT__cpu__DOT__is_csrrw;
+    CData/*0:0*/ ysyx_25040109_top__DOT__cpu__DOT__is_addi;
     CData/*0:0*/ ysyx_25040109_top__DOT__cpu__DOT__fetch_done;
     CData/*0:0*/ ysyx_25040109_top__DOT__cpu__DOT__lsu_done;
     CData/*0:0*/ ysyx_25040109_top__DOT__cpu__DOT__stall_condition;

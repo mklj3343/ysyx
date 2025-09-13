@@ -49,17 +49,16 @@ module ysyx_25040109_mem (
             ifu_respValid <= ifu_reqValid;
             if (ifu_reqValid) begin
 `ifndef SYNTHESIS
-                ifu_rdata <= verilog_pmem_read(ifu_addr,{29'b0, lsu_rlen});
+                ifu_rdata <= verilog_pmem_read(ifu_addr,32'd4);
 `else
-                ifu_rdata <= 32'h0;  // 综合时占位
+                ifu_rdata <= 32'h0;  
 `endif
             end else begin
-            // --- 显式赋值 ---
-            // 当没有请求时，可以让rdata保持原值或赋一个默认值
+
             ifu_rdata <= ifu_rdata; 
         end
 
-            // LSU端口: 读/写，只有reqValid时工作
+
             lsu_respValid <= lsu_reqValid;
             if (lsu_reqValid) begin
                 if (!lsu_wen) begin

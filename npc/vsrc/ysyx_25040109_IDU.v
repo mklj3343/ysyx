@@ -31,6 +31,7 @@ module ysyx_25040109_IDU (
 
 
 
+    /*
     wire [19:0] imm_u = inst[31:12];
     wire [11:0] imm_i = inst[31:20];
     wire [11:0] imm_s = {inst[31:25], inst[11:7]};
@@ -38,9 +39,31 @@ module ysyx_25040109_IDU (
     wire [31:0] imm_u_ext = {imm_u, 12'b0};
     wire [31:0] imm_i_ext = {{20{imm_i[11]}}, imm_i};
     wire [31:0] imm_s_ext = {{20{imm_s[11]}}, imm_s};
+*/
 
-    assign imm = is_lui       ? imm_u_ext :
-                 (is_store)   ? imm_s_ext : imm_i_ext;
+
+  // U-type
+  wire [31:0] imm_u_ext = {inst[31:12], 12'b0};  
+
+  // I-type
+  wire [31:0] imm_i_ext = {{20{inst[31]}}, inst[31:20]};  
+
+  // S-type
+  wire [31:0] imm_s_ext = {{20{inst[31]}}, inst[31:25], inst[11:7]};  
+
+
+  always @( *) begin
+    if(imm == -12)begin
+      $display("%d %d %d %d\n",$signed(imm_u_ext),$signed(imm_i_ext),$signed(imm_s_ext),$signed(inst[31:20]));
+      $finish;
+    end
+  end
+/*    assign imm = is_lui       ? imm_u_ext :
+                 (is_store)   ? imm_s_ext : imm_i_ext;*/
+
+assign imm = is_lui    ? imm_u_ext :
+             is_store  ? imm_s_ext :
+             (is_addi || is_jalr || is_load || is_csrrw) ? imm_i_ext : 32'b0;  // 对于 ADD 和 CSR 设置为 0
 
 assign reg_write_en = is_lui || is_addi || is_add || is_jalr || is_load || is_csrrw ;
 
