@@ -52,12 +52,13 @@ module ysyx_25040109_IDU (
   wire [31:0] imm_s_ext = {{20{inst[31]}}, inst[31:25], inst[11:7]};  
 
 
+  /*
   always @( *) begin
     if(imm == -12)begin
       $display("%d %d %d %d\n",$signed(imm_u_ext),$signed(imm_i_ext),$signed(imm_s_ext),$signed(inst[31:20]));
       $finish;
     end
-  end
+  end*/
 /*    assign imm = is_lui       ? imm_u_ext :
                  (is_store)   ? imm_s_ext : imm_i_ext;*/
 

@@ -109,10 +109,11 @@ module ysyx_25040109_cpu (
      end else begin 
        mcycle_counter <= mcycle_counter + 1; 
 
+       /*
         `ifndef SYNTHESIS
             // 当且仅当一条ADD指令处于执行阶段时，打印其输入和输出
             if (state == S_EXECUTE ) begin
-              /*  if(is_add)begin
+               if(is_add)begin
                 
                 $display("[ADD]PC:%h, rs1_data: %d , rs2_data: %d  ALU: %d ,imm:%d   is_store:%d is_lui:%d\n",pc_current, rs1_data,  rs2_data, alu_result,$signed(imm),is_store,is_lui);
 
@@ -121,10 +122,10 @@ module ysyx_25040109_cpu (
                 if(is_addi)begin
                                   $display("[ADDI] PC: %h, rs1_data: %d, rs2_data: %d ALU %d imm:%d is_store:%d,is_lui:%d\n",pc_current, rs1_data,  rs2_data,  alu_result,$signed(imm),is_store,is_lui);
                                   
-                                  end*/
+                                  end
 
         end
- `endif
+ `endif*/
 
             //prev_is_load <= 0;
 
