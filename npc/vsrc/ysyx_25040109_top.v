@@ -6,7 +6,9 @@ module ysyx_25040109_top (
     output wire [31:0] pc,
     output wire [31:0] inst,
     `ifndef SYNTHESIS
+         /* verilator lint_off UNUSED */
     input wire [31:0] p_count_number,
+         /* verilator lint_off UNUSED */
     `endif
     `ifdef SYNTHESIS
     input wire [31:0] yosys_store_load,
@@ -29,7 +31,9 @@ module ysyx_25040109_top (
     wire lsu_valid;
     wire lsu_ready;
     reg [31:0] inst_top;
+        /* verilator lint_off UNUSED */
     reg [31:0] ifu_idu_pc_top;
+        /* verilator lint_off UNUSED */
     reg [31:0] inst_pc_exu_top;
 
     // CPU 实例化
@@ -75,7 +79,7 @@ module ysyx_25040109_top (
     );
 
     // 输出连接
-    assign pc = inst_pc_exu_top; // PC 从 IFU 的地址输出
+    assign pc = ifu_idu_pc_top; // PC 从 IFU 的地址输出
     assign inst = inst_top; // 指令从 IFU 的数据输出
 
 
@@ -92,9 +96,9 @@ module ysyx_25040109_top (
     end
 
     always @(posedge clk) begin
-         $display("inst:0x%x   ifu_idu_pc_top:0x%08x    ",inst_top,ifu_idu_pc_top);
+       //  $display("inst:0x%x   ifu_idu_pc_top:0x%08x    ",inst_top,ifu_idu_pc_top);
        // $display("inst:0x%x   ifu_idu_pc_top:0x%08x    inst_pc_exu_top:0x%08x    ",inst_top,ifu_idu_pc_top,inst_pc_exu_top);
-        itrace_print(pc, inst, 4, p_count_number);
+       itrace_print(pc, inst, 4, p_count_number);
 
         if (inst_top == 32'h00100073) begin // ebreak 指令
             $display("enter finishi ,a0 decide ending\n");

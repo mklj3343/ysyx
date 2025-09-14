@@ -20,6 +20,7 @@ module exu (
     output reg [1:0] lsu_mem_op,
     output reg lsu_valid,
     input wire lsu_ready,
+    output reg [4:0] lsu_rd_addr,
     output reg [4:0] regfile_rd_addr,
     output reg [31:0] regfile_rd_data,
     output reg regfile_write,
@@ -39,6 +40,7 @@ module exu (
             lsu_addr <= 32'h0;
             lsu_wdata <= 32'h0;
             lsu_mem_op <= 2'h0;
+            lsu_rd_addr <= 5'h0;
             regfile_rd_addr <= 5'h0;
             regfile_rd_data <= 32'h0;
             jump_addr_from_exu <= 32'b0;
@@ -48,6 +50,7 @@ module exu (
             lsu_valid <= (mem_op != 2'h0);
             lsu_mem_op <= mem_op;
             lsu_wdata <= rs2_data;
+            lsu_rd_addr <= rd_addr;
             regfile_rd_addr <= rd_addr;
 
 

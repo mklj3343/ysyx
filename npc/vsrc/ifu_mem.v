@@ -20,6 +20,8 @@ module ifu_mem (
             ready <= 1'b0;
             `ifndef SYNTHESIS
             rdata <= verilog_pmem_read(addr, 4);
+           // rdata <= verilog_pmem_read(32'h80000000, 4);
+            $display("rdata:0x%08x\n",rdata);
             `else
             rdata <= 32'h0; // 综合时返回 0
             `endif

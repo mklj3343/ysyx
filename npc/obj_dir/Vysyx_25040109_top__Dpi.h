@@ -16,13 +16,13 @@ extern "C" {
 
 
     // DPI IMPORTS
-    // DPI import at /home/zxj17/ysyx-workbench/npc/vsrc/ysyx_25040109_top.v:85:34
+    // DPI import at /home/zxj17/ysyx-workbench/npc/vsrc/ysyx_25040109_top.v:89:34
     extern void itrace_print(int pc, int instruction_word, int instr_len_bytes, int p_count_number);
-    // DPI import at /home/zxj17/ysyx-workbench/npc/vsrc/ysyx_25040109_top.v:86:34
+    // DPI import at /home/zxj17/ysyx-workbench/npc/vsrc/ysyx_25040109_top.v:90:34
     extern void printf_finish();
     // DPI import at /home/zxj17/ysyx-workbench/npc/vsrc/regfile.v:25:34
     extern void update_cpu_state(int pc, const svOpenArrayHandle regs);
-    // DPI import at /home/zxj17/ysyx-workbench/npc/vsrc/ysyx_25040109_top.v:84:34
+    // DPI import at /home/zxj17/ysyx-workbench/npc/vsrc/ysyx_25040109_top.v:88:34
     extern void update_decode_state(int pc, int snpc, int dnpc, int inst);
     // DPI import at /home/zxj17/ysyx-workbench/npc/vsrc/ifu_mem.v:12:33
     extern int verilog_pmem_read(int addr, int len);

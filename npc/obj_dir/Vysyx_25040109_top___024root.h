@@ -35,6 +35,7 @@ class Vysyx_25040109_top___024root final : public VerilatedModule {
     CData/*0:0*/ ysyx_25040109_top__DOT__cpu__DOT__lsu_exu_ready;
     CData/*4:0*/ ysyx_25040109_top__DOT__cpu__DOT__exu_regfile_rd_addr;
     CData/*0:0*/ ysyx_25040109_top__DOT__cpu__DOT__exu_regfile_write;
+    CData/*4:0*/ ysyx_25040109_top__DOT__cpu__DOT__exu_lsu_rd_addr;
     CData/*4:0*/ ysyx_25040109_top__DOT__cpu__DOT__lsu_regfile_rd_addr;
     CData/*0:0*/ ysyx_25040109_top__DOT__cpu__DOT__lsu_regfile_write;
     CData/*0:0*/ ysyx_25040109_top__DOT__cpu__DOT__jump_flag_from_exu;
@@ -56,8 +57,6 @@ class Vysyx_25040109_top___024root final : public VerilatedModule {
     IData/*31:0*/ ysyx_25040109_top__DOT__lsu_rdata;
     IData/*31:0*/ ysyx_25040109_top__DOT__cpu__DOT__ifu_idu_inst;
     IData/*31:0*/ ysyx_25040109_top__DOT__cpu__DOT__ifu_idu_pc;
-    IData/*31:0*/ ysyx_25040109_top__DOT__cpu__DOT__idu_exu_rs1_data;
-    IData/*31:0*/ ysyx_25040109_top__DOT__cpu__DOT__idu_exu_rs2_data;
     IData/*31:0*/ ysyx_25040109_top__DOT__cpu__DOT__idu_exu_imm;
     IData/*31:0*/ ysyx_25040109_top__DOT__cpu__DOT__idu_exu_pc;
     IData/*31:0*/ ysyx_25040109_top__DOT__cpu__DOT__exu_lsu_addr;
@@ -69,9 +68,9 @@ class Vysyx_25040109_top___024root final : public VerilatedModule {
     IData/*31:0*/ ysyx_25040109_top__DOT__cpu__DOT__u_exu__DOT__alu_result;
     IData/*31:0*/ ysyx_25040109_top__DOT__cpu__DOT__u_regfile__DOT__i;
     IData/*31:0*/ __Vdly__ysyx_25040109_top__DOT__cpu__DOT__u_ifu__DOT__pc;
-    IData/*31:0*/ __Vdly__ysyx_25040109_top__DOT__cpu__DOT__idu_exu_pc;
     IData/*31:0*/ __Vdly__ysyx_25040109_top__DOT__lsu_addr;
     IData/*31:0*/ __Vdly__ysyx_25040109_top__DOT__lsu_wdata;
+    IData/*31:0*/ __Vdly__ysyx_25040109_top__DOT__ifu_data;
     IData/*31:0*/ __VstlIterCount;
     IData/*31:0*/ __VactIterCount;
     VlUnpacked<IData/*31:0*/, 16> ysyx_25040109_top__DOT__cpu__DOT__u_regfile__DOT__registers;

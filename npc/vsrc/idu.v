@@ -69,14 +69,16 @@ module idu (
                 end
                 7'b0000011: begin // I-type: lw, lbu
                     alu_op <= 4'h1; // ADD for address
-                    mem_op <= (inst[14:12] == 3'h0) ? 2'h1 : 2'h2; // lw: 01, lbu: 10
+                    mem_op <= (inst[14:12] == 3'h2) ? 2'b01 :  // lw (funct3=2 -> 01)
+                              (inst[14:12] == 3'h4) ? 2'b10 : 2'h0; // lbu (funct3=4 -> 10)
                     reg_write <= 1'b1;
                     jalr <= 1'b0;
                     imm <= {{20{inst[31]}}, inst[31:20]};
                 end
                 7'b0100011: begin // S-type: sw, sb
                     alu_op <= 4'h1; // ADD for address
-                    mem_op <= (inst[14:12] == 3'h2) ? 2'h3 : 2'h4; // sw: 11, sb: 10
+                    mem_op <= (inst[14:12] == 3'h2) ? 2'b11 :  // sw (funct3=2 -> 11)
+                              (inst[14:12] == 3'h0) ? 2'b00 : 2'h0; // sb (funct3=0 -> 00)
                     reg_write <= 1'b0;
                     jalr <= 1'b0;
                     imm <= {{20{inst[31]}}, inst[31:25], inst[11:7]};

@@ -7,6 +7,7 @@ module lsu (
     input wire [1:0] mem_op,
     input wire exu_valid,
     output reg lsu_ready,
+    input wire [4:0] rd_addr,
     output reg [31:0] mem_addr,
     output reg [31:0] mem_wdata,
     input wire [31:0] mem_rdata,
@@ -34,7 +35,7 @@ module lsu (
             mem_wdata <= wdata;
             mem_op_out <= mem_op;
             regfile_write <= (mem_op == 2'h1 || mem_op == 2'h2); // lw, lbu
-            regfile_rd_addr <= regfile_rd_addr; // From EXU
+            regfile_rd_addr <= rd_addr; // From EXU
             regfile_rd_data <= (mem_op == 2'h1) ? mem_rdata :
                               (mem_op == 2'h2) ? {{24{1'b0}}, mem_rdata[7:0]} : 32'h0;
         end else begin
