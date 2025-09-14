@@ -67,6 +67,7 @@ module minitv_cpu (
     wire [4:0] exu_regfile_rd_addr;
     wire [31:0] exu_regfile_rd_data;
     wire exu_regfile_write;
+    wire [4:0] exu_lsu_rd_addr;
 
 
     // LSU 到 Regfile 的接口
@@ -132,6 +133,7 @@ module minitv_cpu (
         .lsu_mem_op(exu_lsu_mem_op),
         .lsu_valid(exu_lsu_valid),
         .lsu_ready(lsu_exu_ready),
+        .lsu_rd_addr(exu_lsu_rd_addr),
         .regfile_rd_addr(exu_regfile_rd_addr),
         .regfile_rd_data(exu_regfile_rd_data),
         .regfile_write(exu_regfile_write),
@@ -147,6 +149,7 @@ module minitv_cpu (
         .mem_op(exu_lsu_mem_op),
         .exu_valid(exu_lsu_valid),
         .lsu_ready(lsu_exu_ready),
+        .rd_addr(exu_lsu_rd_addr),
         .mem_addr(lsu_addr),
         .mem_wdata(lsu_wdata),
         .mem_rdata(lsu_rdata),
@@ -159,6 +162,7 @@ module minitv_cpu (
     );
 
     regfile u_regfile (
+        .wb_pc(idu_exu_pc),
         .a0_out(a0_out),
         .clk(clk),
         .rst(rst),

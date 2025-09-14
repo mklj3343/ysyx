@@ -39,7 +39,8 @@ extern "C" int printf_finish(uint32_t inst)
 
 extern "C" void printf_finish()
 {
-  uint32_t a0 = top->a0_out;
+  uint32_t a0 = cpu.gpr[10];
+  
   printf("a0:%d\n",a0);
   if(a0 == 0){
         std::cout << "Finish program (" << "EBREAK" 
@@ -54,16 +55,21 @@ extern "C" void printf_finish()
 
 
 
-extern "C" void update_cpu_state(uint32_t pc, const uint32_t regs[32])
+extern "C" void update_cpu_state(uint32_t pc,const uint32_t regs[16] )
 {
-    cpu.pc = pc;
-    for (int i = 0; i < 16;i++)
-    {
-        cpu.gpr[i] = regs[i];
-        cpu.gpr[i] =top->rootp->ysyx_25040109_top__DOT__cpu__DOT__u_regfile__DOT__registers[i];
+  cpu.pc = pc;
+  for (int i = 0; i < 16;i++)
+  {
+      cpu.gpr[i] = regs[i];
+      cpu.gpr[i]=top->rootp->ysyx_25040109_top__DOT__cpu__DOT__u_regfile__DOT__registers[i];
 
-        
-    }
+
+  }
+  /*
+  cpu.pc = pc;
+    for (int i = 0; i < 16; i++) {
+        cpu.gpr[i] = regs[i];  // 只用传入的参数，不要直接访问top->rootp
+    }*/
         
 }
 

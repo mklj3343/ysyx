@@ -75,8 +75,8 @@ module ysyx_25040109_top (
     );
 
     // 输出连接
-    assign pc = ifu_addr; // PC 从 IFU 的地址输出
-    assign inst = ifu_data; // 指令从 IFU 的数据输出
+    assign pc = inst_pc_exu_top; // PC 从 IFU 的地址输出
+    assign inst = inst_top; // 指令从 IFU 的数据输出
 
 
     // 仿真功能
@@ -92,10 +92,11 @@ module ysyx_25040109_top (
     end
 
     always @(posedge clk) begin
-        $display("inst:0x%x   ifu_idu_pc_top:0x%08x    inst_pc_exu_top:0x%08x    ",inst_top,ifu_idu_pc_top,inst_pc_exu_top);
+         $display("inst:0x%x   ifu_idu_pc_top:0x%08x    ",inst_top,ifu_idu_pc_top);
+       // $display("inst:0x%x   ifu_idu_pc_top:0x%08x    inst_pc_exu_top:0x%08x    ",inst_top,ifu_idu_pc_top,inst_pc_exu_top);
         itrace_print(pc, inst, 4, p_count_number);
 
-        if (inst == 32'h00100073) begin // ebreak 指令
+        if (inst_top == 32'h00100073) begin // ebreak 指令
             $display("enter finishi ,a0 decide ending\n");
 
            // $finish;
