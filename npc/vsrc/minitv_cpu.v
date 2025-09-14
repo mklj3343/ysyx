@@ -2,7 +2,11 @@
 
 // CPU 主模块
 module minitv_cpu (
-    output [31:0] a0_out,
+    output reg [31:0] a0_out,
+    output reg [31:0] inst_top,
+    output reg [31:0] ifu_idu_pc_top,
+    output reg [31:0] inst_pc_exu_top,
+
     input wire clk,
     input wire rst,
     // IFU 访存接口
@@ -18,6 +22,16 @@ module minitv_cpu (
     output wire lsu_valid,
     input wire lsu_ready
 );
+
+
+    always @(*) begin
+        inst_top = ifu_idu_inst;
+        ifu_idu_pc_top = ifu_idu_pc;
+        inst_pc_exu_top = idu_exu_pc;
+    
+    end 
+
+
 
     assign ifu_valid = ifu_idu_valid;
 

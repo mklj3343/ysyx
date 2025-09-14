@@ -28,9 +28,15 @@ module ysyx_25040109_top (
     wire [1:0] lsu_op;
     wire lsu_valid;
     wire lsu_ready;
+    reg [31:0] inst_top;
+    reg [31:0] ifu_idu_pc_top;
+    reg [31:0] inst_pc_exu_top;
 
     // CPU 实例化
     minitv_cpu cpu (
+        .inst_top(inst_top),
+        .ifu_idu_pc_top(ifu_idu_pc_top),
+        .inst_pc_exu_top(inst_pc_exu_top),
         .a0_out(a0_out),
         .clk(clk),
         .rst(rst),
@@ -86,10 +92,13 @@ module ysyx_25040109_top (
     end
 
     always @(posedge clk) begin
+        $display("inst:0x%x   ifu_idu_pc_top:0x%08x    inst_pc_exu_top:0x%08x    ",inst_top,ifu_idu_pc_top,inst_pc_exu_top);
         itrace_print(pc, inst, 4, p_count_number);
+
         if (inst == 32'h00100073) begin // ebreak 指令
-            $display("111111\n");
-            itrace_print(pc, inst, 4, p_count_number);
+            $display("enter finishi ,a0 decide ending\n");
+
+           // $finish;
             printf_finish();
         end
     end

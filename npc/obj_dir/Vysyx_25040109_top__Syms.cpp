@@ -18,7 +18,7 @@ Vysyx_25040109_top__Syms::Vysyx_25040109_top__Syms(VerilatedContext* contextp, c
     , TOP{this, namep}
 {
     // Configure time unit / time precision
-    _vm_contextp__->timeunit(-12);
+    _vm_contextp__->timeunit(-9);
     _vm_contextp__->timeprecision(-12);
     // Setup each module's pointers to their submodules
     // Setup each module's pointer back to symbol table (for public functions)

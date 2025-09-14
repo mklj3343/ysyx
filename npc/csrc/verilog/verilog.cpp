@@ -40,6 +40,7 @@ extern "C" int printf_finish(uint32_t inst)
 extern "C" void printf_finish()
 {
   uint32_t a0 = top->a0_out;
+  printf("a0:%d\n",a0);
   if(a0 == 0){
         std::cout << "Finish program (" << "EBREAK" 
                   << "), Hit a \033[1;" << (a0 == 0 ? 32 : 31) << "m"
@@ -59,7 +60,9 @@ extern "C" void update_cpu_state(uint32_t pc, const uint32_t regs[32])
     for (int i = 0; i < 16;i++)
     {
         cpu.gpr[i] = regs[i];
-        cpu.gpr[i] = top->rootp->ysyx_25040109_top__DOT__cpu__DOT__regfile__DOT__rf[i];
+        cpu.gpr[i] =top->rootp->ysyx_25040109_top__DOT__cpu__DOT__u_regfile__DOT__registers[i];
+
+        
     }
         
 }

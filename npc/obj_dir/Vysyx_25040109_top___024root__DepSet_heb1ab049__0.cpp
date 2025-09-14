@@ -48,23 +48,10 @@ VL_INLINE_OPT void Vysyx_25040109_top___024root____Vdpiimwrap_ysyx_25040109_top_
     printf_finish();
 }
 
-extern "C" void update_cpu_state(unsigned int pc, const svOpenArrayHandle regs);
-
-VL_INLINE_OPT void Vysyx_25040109_top___024root____Vdpiimwrap_ysyx_25040109_top__DOT__cpu__DOT__regfile__DOT__update_cpu_state__Vdpioc2_TOP(IData/*31:0*/ pc, const VlUnpacked<IData/*31:0*/, 16> &regs) {
-    VL_DEBUG_IF(VL_DBG_MSGF("+    Vysyx_25040109_top___024root____Vdpiimwrap_ysyx_25040109_top__DOT__cpu__DOT__regfile__DOT__update_cpu_state__Vdpioc2_TOP\n"); );
-    // Body
-    unsigned int pc__Vcvt;
-    for (size_t pc__Vidx = 0; pc__Vidx < 1; ++pc__Vidx) pc__Vcvt = pc;
-    static const int regs__Vopenprops__ulims[2] = {0, 15};
-    static const VerilatedVarProps regs__Vopenprops(VLVT_UINT32, VLVD_IN, VerilatedVarProps::Packed(), 31, 0, VerilatedVarProps::Unpacked(), 1, regs__Vopenprops__ulims);
-    VerilatedDpiOpenVar regs__Vopenarray (&regs__Vopenprops, &regs);
-    update_cpu_state(pc__Vcvt, &regs__Vopenarray);
-}
-
 extern "C" int verilog_pmem_read(int addr, int len);
 
-VL_INLINE_OPT void Vysyx_25040109_top___024root____Vdpiimwrap_ysyx_25040109_top__DOT__mem__DOT__verilog_pmem_read_TOP(IData/*31:0*/ addr, IData/*31:0*/ len, IData/*31:0*/ &verilog_pmem_read__Vfuncrtn) {
-    VL_DEBUG_IF(VL_DBG_MSGF("+    Vysyx_25040109_top___024root____Vdpiimwrap_ysyx_25040109_top__DOT__mem__DOT__verilog_pmem_read_TOP\n"); );
+VL_INLINE_OPT void Vysyx_25040109_top___024root____Vdpiimwrap_ysyx_25040109_top__DOT__ifu_mem_inst__DOT__verilog_pmem_read_TOP(IData/*31:0*/ addr, IData/*31:0*/ len, IData/*31:0*/ &verilog_pmem_read__Vfuncrtn) {
+    VL_DEBUG_IF(VL_DBG_MSGF("+    Vysyx_25040109_top___024root____Vdpiimwrap_ysyx_25040109_top__DOT__ifu_mem_inst__DOT__verilog_pmem_read_TOP\n"); );
     // Body
     int addr__Vcvt;
     for (size_t addr__Vidx = 0; addr__Vidx < 1; ++addr__Vidx) addr__Vcvt = addr;
@@ -75,18 +62,18 @@ VL_INLINE_OPT void Vysyx_25040109_top___024root____Vdpiimwrap_ysyx_25040109_top_
     verilog_pmem_read__Vfuncrtn = verilog_pmem_read__Vfuncrtn__Vcvt;
 }
 
-extern "C" void verilog_pmem_write(int addr, int data, char mask);
+extern "C" void verilog_pmem_write(int addr, int data, int len);
 
-VL_INLINE_OPT void Vysyx_25040109_top___024root____Vdpiimwrap_ysyx_25040109_top__DOT__mem__DOT__verilog_pmem_write_TOP(IData/*31:0*/ addr, IData/*31:0*/ data, CData/*7:0*/ mask) {
-    VL_DEBUG_IF(VL_DBG_MSGF("+    Vysyx_25040109_top___024root____Vdpiimwrap_ysyx_25040109_top__DOT__mem__DOT__verilog_pmem_write_TOP\n"); );
+VL_INLINE_OPT void Vysyx_25040109_top___024root____Vdpiimwrap_ysyx_25040109_top__DOT__lsu_mem_inst__DOT__verilog_pmem_write_TOP(IData/*31:0*/ addr, IData/*31:0*/ data, IData/*31:0*/ len) {
+    VL_DEBUG_IF(VL_DBG_MSGF("+    Vysyx_25040109_top___024root____Vdpiimwrap_ysyx_25040109_top__DOT__lsu_mem_inst__DOT__verilog_pmem_write_TOP\n"); );
     // Body
     int addr__Vcvt;
     for (size_t addr__Vidx = 0; addr__Vidx < 1; ++addr__Vidx) addr__Vcvt = addr;
     int data__Vcvt;
     for (size_t data__Vidx = 0; data__Vidx < 1; ++data__Vidx) data__Vcvt = data;
-    char mask__Vcvt;
-    for (size_t mask__Vidx = 0; mask__Vidx < 1; ++mask__Vidx) mask__Vcvt = mask;
-    verilog_pmem_write(addr__Vcvt, data__Vcvt, mask__Vcvt);
+    int len__Vcvt;
+    for (size_t len__Vidx = 0; len__Vidx < 1; ++len__Vidx) len__Vcvt = len;
+    verilog_pmem_write(addr__Vcvt, data__Vcvt, len__Vcvt);
 }
 
 #ifdef VL_DEBUG
@@ -100,7 +87,12 @@ void Vysyx_25040109_top___024root___eval_triggers__act(Vysyx_25040109_top___024r
     // Body
     vlSelf->__VactTriggered.at(0U) = ((IData)(vlSelf->clk) 
                                       & (~ (IData)(vlSelf->__Vtrigrprev__TOP__clk)));
+    vlSelf->__VactTriggered.at(1U) = (((IData)(vlSelf->clk) 
+                                       & (~ (IData)(vlSelf->__Vtrigrprev__TOP__clk))) 
+                                      | ((IData)(vlSelf->rst) 
+                                         & (~ (IData)(vlSelf->__Vtrigrprev__TOP__rst))));
     vlSelf->__Vtrigrprev__TOP__clk = vlSelf->clk;
+    vlSelf->__Vtrigrprev__TOP__rst = vlSelf->rst;
 #ifdef VL_DEBUG
     if (VL_UNLIKELY(vlSymsp->_vm_contextp__->debug())) {
         Vysyx_25040109_top___024root___dump_triggers__act(vlSelf);
