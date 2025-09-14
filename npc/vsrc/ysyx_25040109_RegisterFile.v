@@ -6,9 +6,7 @@ module ysyx_25040109_RegisterFile #(
     output [DATA_WIDTH-1:0] a0_out,
 `endif
     input                   clk,
-      /* verilator lint_off UNUSED */
     input                   rst,
-      /* verilator lint_off UNUSED */
     input  [31:0]           pc,
     input  [DATA_WIDTH-1:0] wdata,
     input  [ADDR_WIDTH-1:0] waddr,
@@ -22,26 +20,27 @@ module ysyx_25040109_RegisterFile #(
 
     (* ram_style = "block" *) reg [DATA_WIDTH-1:0] rf[0:15];
 
-    
+    // 同步读写逻辑
     reg [DATA_WIDTH-1:0] rdata1_reg;
     reg [DATA_WIDTH-1:0] rdata2_reg;
 
-
+    // 写操作：时钟上升沿，写入 rf
+               // integer i;
     always @(posedge clk) begin
-        
-        if (wen && waddr[4:0] != 5'b0 && waddr[4:0] <= 5'd15) begin
+        //if (rst) begin
+            // 初始化所有寄存器为 0
+
+           /* for (i = 0; i < 16; i = i + 1) begin
+                rf[i] <= 32'h0;
+            end
+        end */ if (wen && waddr[4:0] != 5'b0 && waddr[4:0] <= 5'd15) begin
             rf[waddr[3:0]] <= wdata;
         end
     end
 
 
- 
-    integer i;
     always @(posedge clk) begin
         if (rst) begin
-            for (i = 0; i < 16; i = i + 1) begin
-            rf[i] <= 32'h0;  // 初始化所有寄存器为0
-        end
             rdata1_reg <= 32'h0;
             rdata2_reg <= 32'h0;
         end else begin
@@ -52,9 +51,6 @@ module ysyx_25040109_RegisterFile #(
     
     assign rdata1 = rdata1_reg;
     assign rdata2 = rdata2_reg;
-
-    
-
 
 `ifndef SYNTHESIS
     assign a0_out = rf[10];

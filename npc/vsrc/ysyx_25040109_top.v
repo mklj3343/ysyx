@@ -1,79 +1,85 @@
+`timescale 1ns / 1ps
+
 module ysyx_25040109_top (
-    input clk,
-    input rst,
-    output [31:0] pc,
-    output [31:0] inst,
-`ifndef SYNTHESIS
-    input [31:0] p_count_number,
-`endif
-`ifdef SYNTHESIS
-    input [31:0] yosys_store_load,
-`endif
-    output [31:0] a0_out
+    input wire clk,
+    input wire rst,
+    output wire [31:0] pc,
+    output wire [31:0] inst,
+    `ifndef SYNTHESIS
+    input wire [31:0] p_count_number,
+    `endif
+    `ifdef SYNTHESIS
+    input wire [31:0] yosys_store_load,
+    `endif
+    output wire [31:0] a0_out
 );
 
-    wire        ifu_reqValid;
+    // IFU 访存接口
     wire [31:0] ifu_addr;
-    wire        ifu_respValid;
-    wire [31:0] ifu_rdata;
-    wire        lsu_reqValid;
+    wire [31:0] ifu_data;
+    wire ifu_valid;
+    wire ifu_ready;
+
+
+    // LSU 访存接口
     wire [31:0] lsu_addr;
-    wire        lsu_wen;
-    wire  [2:0]      lsu_rlen;
     wire [31:0] lsu_wdata;
-    wire [3:0]  lsu_wmask;
-    wire        lsu_respValid;
     wire [31:0] lsu_rdata;
+    wire [1:0] lsu_op;
+    wire lsu_valid;
+    wire lsu_ready;
 
-    wire [31:0] pc_internal, inst_internal, next_pc_internal;
-
-    ysyx_25040109_cpu cpu (
-        .lsu_rlen(lsu_rlen),
+    // CPU 实例化
+    minitv_cpu cpu (
+        .a0_out(a0_out),
         .clk(clk),
         .rst(rst),
-        .ifu_reqValid(ifu_reqValid),
         .ifu_addr(ifu_addr),
-        .ifu_respValid(ifu_respValid),
-        .ifu_rdata(ifu_rdata),
-        .lsu_reqValid(lsu_reqValid),
+        .ifu_data(ifu_data),
+        .ifu_valid(ifu_valid),
+        .ifu_ready(ifu_ready),
         .lsu_addr(lsu_addr),
-        .lsu_wen(lsu_wen),
         .lsu_wdata(lsu_wdata),
-        .lsu_wmask(lsu_wmask),
-        .lsu_respValid(lsu_respValid),
         .lsu_rdata(lsu_rdata),
-`ifndef SYNTHESIS
-        .next_pc(next_pc_internal),
-        .pc_out(pc_internal),
-        .inst_out(inst_internal),
-        .a0_out(a0_out)
-`endif
+        .lsu_op(lsu_op),
+        .lsu_valid(lsu_valid),
+        .lsu_ready(lsu_ready)
     );
 
-    ysyx_25040109_mem mem (
-        .lsu_rlen(lsu_rlen),
+    // IFU 内存模块
+    ifu_mem ifu_mem_inst (
         .clk(clk),
         .rst(rst),
-        .ifu_reqValid(ifu_reqValid),
-        .ifu_addr(ifu_addr),
-        .ifu_respValid(ifu_respValid),
-        .ifu_rdata(ifu_rdata),
-        .lsu_reqValid(lsu_reqValid),
-        .lsu_addr(lsu_addr),
-        .lsu_wen(lsu_wen),
-        .lsu_wdata(lsu_wdata),
-        .lsu_wmask(lsu_wmask),
-        .lsu_respValid(lsu_respValid),
-        .lsu_rdata(lsu_rdata)
+        .addr(ifu_addr),
+        .rdata(ifu_data),
+        .valid(ifu_valid),
+        .ready(ifu_ready)
     );
 
-    assign pc = pc_internal;
-    assign inst = inst_internal;
+    // LSU 内存模块
+    lsu_mem lsu_mem_inst (
+        .clk(clk),
+        .rst(rst),
+        .addr(lsu_addr),
+        .wdata(lsu_wdata),
+        .rdata(lsu_rdata),
+        .op(lsu_op),
+        .lsu_valid(lsu_valid),
+        .ready(lsu_ready)
+    );
 
-`ifndef SYNTHESIS
+    // 输出连接
+    assign pc = ifu_addr; // PC 从 IFU 的地址输出
+    assign inst = ifu_data; // 指令从 IFU 的数据输出
+
+
+    // 仿真功能
+    `ifndef SYNTHESIS
     import "DPI-C" function void update_decode_state(int pc, int snpc, int dnpc, int inst);
     import "DPI-C" function void itrace_print(int pc, int instruction_word, int instr_len_bytes, int p_count_number);
     import "DPI-C" function void printf_finish();
+
+    wire [31:0] next_pc_internal = ifu_addr + 4; // 假设顺序执行，next_pc 近似为 pc + 4
 
     always @(*) begin
         update_decode_state(pc, pc + 32'd4, next_pc_internal, inst);
@@ -81,12 +87,13 @@ module ysyx_25040109_top (
 
     always @(posedge clk) begin
         itrace_print(pc, inst, 4, p_count_number);
-        if (inst == 32'h00100073) begin  // ebreak
+        if (inst == 32'h00100073) begin // ebreak 指令
+            $display("111111\n");
             itrace_print(pc, inst, 4, p_count_number);
             printf_finish();
         end
     end
-`endif
+    `endif
 
 endmodule
 

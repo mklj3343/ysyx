@@ -1,64 +1,62 @@
 module ysyx_25040109_mem (
     input clk,
     input rst,
-    // IFU SimpleBus 接口
-    input ifu_reqValid,
-    input [31:0] ifu_addr,
-    output reg ifu_respValid,
-    output reg [31:0] ifu_rdata,
-    // LSU SimpleBus 接口
-    input lsu_reqValid,
-    input [31:0] lsu_addr,
-    input lsu_wen,
-    input [31:0] lsu_wdata,
-    input [3:0] lsu_wmask,
-    input [2:0] lsu_rlen,
-    output reg lsu_respValid,
-    output reg [31:0] lsu_rdata
+
+    input  [31:0] mem_addr,   
+    input  [31:0] mem_wdata,  
+    input         mem_wen, 
+    input         mem_ren,   
+    input  [2:0]  mem_funct3, 
+    output [31:0] mem_rdata   
 );
+
 `ifndef SYNTHESIS
-    import "DPI-C" function int verilog_pmem_read(input int addr,input int len);
-    import "DPI-C" function void verilog_pmem_write(input int addr, input int data, input byte mask);
+    import "DPI-C" function void verilog_pmem_read(input int addr, output int data);
+    import "DPI-C" function void verilog_pmem_write(input int addr, input int data, input int len);
 `endif
-    reg [2:0] write_len;
+
+    reg [31:0] mem_rdata_reg;
+
+
     always @(*) begin
-        case (lsu_wmask)
-            4'b0001: write_len = 3'd1;  // sb
-            4'b1111: write_len = 3'd4;  // sw
-            default: write_len = 3'd0;
-        endcase
-    end
-    always @(posedge clk) begin
-        if (rst) begin
-            ifu_respValid <= 0;
-            lsu_respValid <= 0;
-            ifu_rdata <= 32'b0;
-            lsu_rdata <= 32'b0;
+
+        if (mem_ren) begin
+`ifndef SYNTHESIS
+            
+            verilog_pmem_read(mem_addr, mem_rdata_reg);
+`else
+
+            mem_rdata_reg = 32'h0; 
+`endif
         end else begin
-            // IFU端口: 只读，只有reqValid时工作
-            ifu_respValid <= ifu_reqValid;
-            if (ifu_reqValid) begin
+            mem_rdata_reg = 32'h0;
+        end
+    end
+    assign mem_rdata = mem_rdata_reg;
+
+
+    `ifdef SYNTHESIS
+    reg [31:0] len;
+    `endif 
+    always @(posedge clk ) begin
+        if (!rst && mem_wen) begin
+            `ifndef SYNTHESIS
+            integer len;
+            `endif 
+            case (mem_funct3)
+                3'b000: len = 1;  
+                3'b010: len = 4;  
+                default: len = 0;
+            endcase
+            if (len > 0) begin
 `ifndef SYNTHESIS
-                ifu_rdata <= verilog_pmem_read(ifu_addr,32'd4);
+                verilog_pmem_write(mem_addr, mem_wdata, len);
 `else
-                ifu_rdata <= 32'h0;
+                
 `endif
-            end
-            lsu_respValid <= lsu_reqValid;
-            if (lsu_reqValid) begin
-                if (!lsu_wen) begin
-`ifndef SYNTHESIS
-                    lsu_rdata <= verilog_pmem_read(lsu_addr,{29'b0, lsu_rlen});
-`else
-                    lsu_rdata <= 32'h0;
-`endif
-                end else begin
-`ifndef SYNTHESIS
-                    verilog_pmem_write(lsu_addr, lsu_wdata, {5'b0,write_len});
-`endif
-                end
             end
         end
     end
+
 endmodule
 
