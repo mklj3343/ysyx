@@ -61,10 +61,8 @@ extern "C" void update_cpu_state(uint32_t pc,const uint32_t regs[16] )
   for (int i = 0; i < 16;i++)
   {
       cpu.gpr[i] = regs[i];
-      cpu.gpr[i]=top->rootp->ysyx_25040109_top__DOT__cpu__DOT__u_regfile__DOT__registers[i];
-
-
   }
+  
   /*
   cpu.pc = pc;
     for (int i = 0; i < 16; i++) {
@@ -72,6 +70,13 @@ extern "C" void update_cpu_state(uint32_t pc,const uint32_t regs[16] )
     }*/
         
 }
+
+
+
+
+extern "C" void update_cpu_state16(int pc, int r0,int r1,int r2,int r3,int r4,int r5,int r6,int r7, int r8,int r9,int r10,int r11,int r12,int r13,int r14,int r15) { uint32_t a[16] = { (uint32_t)r0,(uint32_t)r1,(uint32_t)r2,(uint32_t)r3, (uint32_t)r4,(uint32_t)r5,(uint32_t)r6,(uint32_t)r7, (uint32_t)r8,(uint32_t)r9,(uint32_t)r10,(uint32_t)r11, (uint32_t)r12,(uint32_t)r13,(uint32_t)r14,(uint32_t)r15 }; update_cpu_state((uint32_t)pc, a); }
+
+
 
 extern "C" void update_decode_state(vaddr_t pc,vaddr_t snpc ,vaddr_t dnpc,uint32_t inst){
     lastest_decode.pc = pc;

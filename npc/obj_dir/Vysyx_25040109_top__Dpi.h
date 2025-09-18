@@ -16,17 +16,17 @@ extern "C" {
 
 
     // DPI IMPORTS
-    // DPI import at /home/zxj17/ysyx-workbench/npc/vsrc/ysyx_25040109_top.v:89:34
+    // DPI import at /home/zxj17/ysyx-workbench/npc/vsrc/ysyx_25040109_top.v:104:34
     extern void itrace_print(int pc, int instruction_word, int instr_len_bytes, int p_count_number);
-    // DPI import at /home/zxj17/ysyx-workbench/npc/vsrc/ysyx_25040109_top.v:90:34
+    // DPI import at /home/zxj17/ysyx-workbench/npc/vsrc/ysyx_25040109_top.v:105:34
     extern void printf_finish();
     // DPI import at /home/zxj17/ysyx-workbench/npc/vsrc/regfile.v:25:34
-    extern void update_cpu_state(int pc, const svOpenArrayHandle regs);
-    // DPI import at /home/zxj17/ysyx-workbench/npc/vsrc/ysyx_25040109_top.v:88:34
+    extern void update_cpu_state16(int pc, int r0, int r1, int r2, int r3, int r4, int r5, int r6, int r7, int r8, int r9, int r10, int r11, int r12, int r13, int r14, int r15);
+    // DPI import at /home/zxj17/ysyx-workbench/npc/vsrc/ysyx_25040109_top.v:103:34
     extern void update_decode_state(int pc, int snpc, int dnpc, int inst);
     // DPI import at /home/zxj17/ysyx-workbench/npc/vsrc/ifu_mem.v:12:33
     extern int verilog_pmem_read(int addr, int len);
-    // DPI import at /home/zxj17/ysyx-workbench/npc/vsrc/lsu_mem.v:15:34
+    // DPI import at /home/zxj17/ysyx-workbench/npc/vsrc/lsu_mem.v:14:34
     extern void verilog_pmem_write(int addr, int data, int len);
 
 #ifdef __cplusplus

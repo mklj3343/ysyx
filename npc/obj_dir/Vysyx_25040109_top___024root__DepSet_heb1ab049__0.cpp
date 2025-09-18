@@ -48,17 +48,46 @@ VL_INLINE_OPT void Vysyx_25040109_top___024root____Vdpiimwrap_ysyx_25040109_top_
     printf_finish();
 }
 
-extern "C" void update_cpu_state(int pc, const svOpenArrayHandle regs);
+extern "C" void update_cpu_state16(int pc, int r0, int r1, int r2, int r3, int r4, int r5, int r6, int r7, int r8, int r9, int r10, int r11, int r12, int r13, int r14, int r15);
 
-VL_INLINE_OPT void Vysyx_25040109_top___024root____Vdpiimwrap_ysyx_25040109_top__DOT__cpu__DOT__u_regfile__DOT__update_cpu_state__Vdpioc2_TOP(IData/*31:0*/ pc, const VlUnpacked<IData/*31:0*/, 16> &regs) {
-    VL_DEBUG_IF(VL_DBG_MSGF("+    Vysyx_25040109_top___024root____Vdpiimwrap_ysyx_25040109_top__DOT__cpu__DOT__u_regfile__DOT__update_cpu_state__Vdpioc2_TOP\n"); );
+VL_INLINE_OPT void Vysyx_25040109_top___024root____Vdpiimwrap_ysyx_25040109_top__DOT__cpu__DOT__u_regfile__DOT__update_cpu_state16_TOP(IData/*31:0*/ pc, IData/*31:0*/ r0, IData/*31:0*/ r1, IData/*31:0*/ r2, IData/*31:0*/ r3, IData/*31:0*/ r4, IData/*31:0*/ r5, IData/*31:0*/ r6, IData/*31:0*/ r7, IData/*31:0*/ r8, IData/*31:0*/ r9, IData/*31:0*/ r10, IData/*31:0*/ r11, IData/*31:0*/ r12, IData/*31:0*/ r13, IData/*31:0*/ r14, IData/*31:0*/ r15) {
+    VL_DEBUG_IF(VL_DBG_MSGF("+    Vysyx_25040109_top___024root____Vdpiimwrap_ysyx_25040109_top__DOT__cpu__DOT__u_regfile__DOT__update_cpu_state16_TOP\n"); );
     // Body
     int pc__Vcvt;
     for (size_t pc__Vidx = 0; pc__Vidx < 1; ++pc__Vidx) pc__Vcvt = pc;
-    static const int regs__Vopenprops__ulims[2] = {0, 15};
-    static const VerilatedVarProps regs__Vopenprops(VLVT_UINT32, VLVD_IN, VerilatedVarProps::Packed(), 31, 0, VerilatedVarProps::Unpacked(), 1, regs__Vopenprops__ulims);
-    VerilatedDpiOpenVar regs__Vopenarray (&regs__Vopenprops, &regs);
-    update_cpu_state(pc__Vcvt, &regs__Vopenarray);
+    int r0__Vcvt;
+    for (size_t r0__Vidx = 0; r0__Vidx < 1; ++r0__Vidx) r0__Vcvt = r0;
+    int r1__Vcvt;
+    for (size_t r1__Vidx = 0; r1__Vidx < 1; ++r1__Vidx) r1__Vcvt = r1;
+    int r2__Vcvt;
+    for (size_t r2__Vidx = 0; r2__Vidx < 1; ++r2__Vidx) r2__Vcvt = r2;
+    int r3__Vcvt;
+    for (size_t r3__Vidx = 0; r3__Vidx < 1; ++r3__Vidx) r3__Vcvt = r3;
+    int r4__Vcvt;
+    for (size_t r4__Vidx = 0; r4__Vidx < 1; ++r4__Vidx) r4__Vcvt = r4;
+    int r5__Vcvt;
+    for (size_t r5__Vidx = 0; r5__Vidx < 1; ++r5__Vidx) r5__Vcvt = r5;
+    int r6__Vcvt;
+    for (size_t r6__Vidx = 0; r6__Vidx < 1; ++r6__Vidx) r6__Vcvt = r6;
+    int r7__Vcvt;
+    for (size_t r7__Vidx = 0; r7__Vidx < 1; ++r7__Vidx) r7__Vcvt = r7;
+    int r8__Vcvt;
+    for (size_t r8__Vidx = 0; r8__Vidx < 1; ++r8__Vidx) r8__Vcvt = r8;
+    int r9__Vcvt;
+    for (size_t r9__Vidx = 0; r9__Vidx < 1; ++r9__Vidx) r9__Vcvt = r9;
+    int r10__Vcvt;
+    for (size_t r10__Vidx = 0; r10__Vidx < 1; ++r10__Vidx) r10__Vcvt = r10;
+    int r11__Vcvt;
+    for (size_t r11__Vidx = 0; r11__Vidx < 1; ++r11__Vidx) r11__Vcvt = r11;
+    int r12__Vcvt;
+    for (size_t r12__Vidx = 0; r12__Vidx < 1; ++r12__Vidx) r12__Vcvt = r12;
+    int r13__Vcvt;
+    for (size_t r13__Vidx = 0; r13__Vidx < 1; ++r13__Vidx) r13__Vcvt = r13;
+    int r14__Vcvt;
+    for (size_t r14__Vidx = 0; r14__Vidx < 1; ++r14__Vidx) r14__Vcvt = r14;
+    int r15__Vcvt;
+    for (size_t r15__Vidx = 0; r15__Vidx < 1; ++r15__Vidx) r15__Vcvt = r15;
+    update_cpu_state16(pc__Vcvt, r0__Vcvt, r1__Vcvt, r2__Vcvt, r3__Vcvt, r4__Vcvt, r5__Vcvt, r6__Vcvt, r7__Vcvt, r8__Vcvt, r9__Vcvt, r10__Vcvt, r11__Vcvt, r12__Vcvt, r13__Vcvt, r14__Vcvt, r15__Vcvt);
 }
 
 extern "C" int verilog_pmem_read(int addr, int len);
@@ -98,12 +127,12 @@ void Vysyx_25040109_top___024root___eval_triggers__act(Vysyx_25040109_top___024r
     Vysyx_25040109_top__Syms* const __restrict vlSymsp VL_ATTR_UNUSED = vlSelf->vlSymsp;
     VL_DEBUG_IF(VL_DBG_MSGF("+    Vysyx_25040109_top___024root___eval_triggers__act\n"); );
     // Body
-    vlSelf->__VactTriggered.at(0U) = ((IData)(vlSelf->clk) 
-                                      & (~ (IData)(vlSelf->__Vtrigrprev__TOP__clk)));
-    vlSelf->__VactTriggered.at(1U) = (((IData)(vlSelf->clk) 
+    vlSelf->__VactTriggered.at(0U) = (((IData)(vlSelf->clk) 
                                        & (~ (IData)(vlSelf->__Vtrigrprev__TOP__clk))) 
                                       | ((IData)(vlSelf->rst) 
                                          & (~ (IData)(vlSelf->__Vtrigrprev__TOP__rst))));
+    vlSelf->__VactTriggered.at(1U) = ((~ (IData)(vlSelf->clk)) 
+                                      & (IData)(vlSelf->__Vtrigrprev__TOP__clk));
     vlSelf->__Vtrigrprev__TOP__clk = vlSelf->clk;
     vlSelf->__Vtrigrprev__TOP__rst = vlSelf->rst;
 #ifdef VL_DEBUG
