@@ -1,0 +1,114 @@
+`timescale 1ns / 1ps
+module exu (
+    input  wire        clk,
+    input  wire        rst,
+
+    input  wire [31:0] rs1_data,
+    input  wire [31:0] rs2_data,
+    input  wire [4:0]  rd_addr,
+    input  wire [31:0] imm,
+    input  wire [3:0]  alu_op,
+
+    // 3'b000: NONE, 001: LW, 010: LBU, 011: SW, 100: SB
+    input  wire [2:0]  mem_op,
+
+    input  wire        reg_write,
+    input  wire        jalr,
+    input  wire        idu_valid,
+
+    input  wire [31:0] inst_pc_from_idu,
+
+    output reg         exu_ready,
+
+    // -> LSU
+    output reg  [31:0] lsu_addr,
+    output reg  [31:0] lsu_wdata,
+    output reg  [2:0]  lsu_mem_op,
+    output reg         lsu_valid,
+    input  wire        lsu_ready,
+    output reg  [4:0]  lsu_rd_addr,
+
+    // -> Regfile
+    output reg  [4:0]  regfile_rd_addr,
+    output reg  [31:0] regfile_rd_data,
+    output reg         regfile_write,
+
+    // -> IFU (跳转重定向)
+    output reg         jump_flag_from_exu,
+    output reg  [31:0] jump_addr_from_exu
+);
+
+    // 组合 ALU 结果
+    wire [31:0] alu_res =
+        (alu_op == 4'h1) ? (rs1_data + imm) :    // ADD / 取址
+        (alu_op == 4'h2) ?  imm            :     // LUI
+                            32'h0;
+
+    // 只保留用得上的枚举，避免 UNUSEDPARAM
+    localparam [2:0] MEM_NONE = 3'b000;
+
+    always @(posedge clk or posedge rst) begin
+        if (rst) begin
+            exu_ready           <= 1'b1;
+
+            lsu_valid           <= 1'b0;
+            regfile_write       <= 1'b0;
+
+            lsu_addr            <= 32'h0;
+            lsu_wdata           <= 32'h0;
+            lsu_mem_op          <= MEM_NONE;
+            lsu_rd_addr         <= 5'h0;
+
+            regfile_rd_addr     <= 5'h0;
+            regfile_rd_data     <= 32'h0;
+
+            jump_addr_from_exu  <= 32'h0;
+            jump_flag_from_exu  <= 1'b0;
+
+        end else if (idu_valid && lsu_ready) begin
+            exu_ready    <= 1'b0;
+
+            // 发给 LSU
+            lsu_valid    <= (mem_op != MEM_NONE);
+            lsu_mem_op   <= mem_op;
+            lsu_wdata    <= rs2_data;
+            lsu_rd_addr  <= rd_addr;
+
+            // 发给 Regfile（EXU 写回或 jalr 的 ra）
+            regfile_rd_addr <= rd_addr;
+
+            // jalr：使用“当拍” alu_res 计算跳转目标
+            if (jalr) begin
+                jump_flag_from_exu <= 1'b1;
+                jump_addr_from_exu <= (alu_res & 32'hFFFF_FFFE);
+            end else begin
+                jump_flag_from_exu <= 1'b0;
+                jump_addr_from_exu <= 32'h0;
+            end
+
+            // EXU 写回（仅非访存指令）
+            regfile_write <= reg_write && (mem_op == MEM_NONE);
+
+            case (alu_op)
+                4'h1: begin // ADD / 取址
+                    lsu_addr        <= alu_res;
+                    regfile_rd_data <= jalr ? (inst_pc_from_idu + 32'd4) : alu_res;
+                end
+                4'h2: begin // LUI
+                    lsu_addr        <= 32'h0;
+                    regfile_rd_data <= alu_res;
+                end
+                default: begin
+                    lsu_addr        <= 32'h0;
+                    regfile_rd_data <= 32'h0;
+                end
+            endcase
+
+        end else begin
+            exu_ready          <= 1'b1;
+            lsu_valid          <= 1'b0;
+            regfile_write      <= 1'b0;
+            jump_flag_from_exu <= 1'b0;
+        end
+    end
+endmodule
