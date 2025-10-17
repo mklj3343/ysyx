@@ -1,60 +1,28 @@
 module ysyx_25040109_IFU (
-    input             clk,
-    input             rst,
-    input             fetch_en,
-    input  [31:0]     pc,
-    output reg fetch_done,
-    output [31:0]     inst,
-    output reg        ifu_reqValid,
-    output reg [31:0] ifu_addr,
-    input             ifu_respValid,
-    input  [31:0]     ifu_rdata
+    input  [31:0] pc,
+`ifdef SYNTHESIS
+    input  [31:0] yosys_inst_from_mem,
+`endif
+    output [31:0] inst_ifu
 );
-    localparam S_IDLE = 0;
-    localparam S_WAIT = 1;
-    reg [0:0] state;
-    reg [31:0] inst_reg;
+    wire is_pc_valid = (pc >= 32'h8000_0000) && (pc <= 32'h87FF_FFFF);
+    reg [31:0] inst_from_mem;
 
-    always @(posedge clk) begin
-        if (rst) begin
-            state <= S_IDLE;
-            ifu_reqValid <= 0;
-            ifu_addr     <= 32'b0; 
-            inst_reg <= 32'b0;
-            fetch_done <= 0;
+`ifndef SYNTHESIS
+    import "DPI-C" function void verilog_pmem_read(input int addr, output int data);
+`endif
+
+    always @(*) begin
+        if (is_pc_valid) begin
+`ifndef SYNTHESIS
+            verilog_pmem_read(pc, inst_from_mem);
+`else
+            inst_from_mem = yosys_inst_from_mem;
+`endif
         end else begin
-            case (state)
-                S_IDLE: begin
-                    if (fetch_en) begin
-                        ifu_reqValid <= 1;
-                        ifu_addr <= pc;
-                        state <= S_WAIT;
-                        fetch_done <= 0;
-                        inst_reg     <= inst_reg;
-                    end else begin
-                        ifu_reqValid <= 0;
-                        ifu_addr <= ifu_addr;
-                        state    <= S_IDLE;
-                        fetch_done <= 0;
-                        inst_reg     <= inst_reg;
-                    end
-                end
-                S_WAIT: begin
-                    ifu_reqValid <= 0;
-                    if (ifu_respValid) begin
-                        inst_reg <= ifu_rdata;
-                        state <= S_IDLE;
-                        fetch_done <= 1;
-                    end  else begin
-                    state      <= S_WAIT;
-                    fetch_done <= 0;       // 完成信号保持为低
-                    inst_reg   <= inst_reg;  // 指令寄存器保持不变
-                end
-                 ifu_addr <= ifu_addr;
-                end
-            endcase
+            inst_from_mem = 32'h0000_0013; // NOP
         end
     end
-    assign inst = inst_reg;
-endmodule
 
+    assign inst_ifu = inst_from_mem;
+endmodule
